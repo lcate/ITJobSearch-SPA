@@ -1,0 +1,28 @@
+<div class="jumbtron">
+  <h1 class="display-4 text-center">Companies</h1>
+</div>
+
+<div class="col-md-12">
+  <button type="button" class="btn btn-success" (click)="addCompany()">New company</button>
+  <hr />
+<div>
+  <table class="table table-condensed table-bordered table-striped table-hover">
+    <thead>
+      <tr>
+        <th class="col-md-7">Company</th>
+        <th>Options</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let company of companies">
+        <td>{{company?.name}}</td>
+        <td class="action-button-column">
+          <a title="Edit" (click)="editCompany(company.id)"><i class="fas fa-edit"></i> </a>
+          <a title="Delete" (click)="deleteCompany(company.id)" style="margin-left: 12px;"><i
+              class="fas fa-trash-alt"></i> </a>
+        </td>
+      </tr>
+    </tbody>
+
+  </table>
+</div>

@@ -1,0 +1,35 @@
+<div class="jumbtron">
+  <h1 class="display-4 text-center">Job offer</h1>
+</div>
+
+<div class="col-md-12">
+  <button type="button" class="btn btn-success" (click)="addJobOffer()">New job offer</button>
+  <hr/>
+
+  <table class="table table-condensed table-bordered table-striped table-hover">
+      <thead>
+          <tr>
+          <th>id</th>
+          <th>position</th>
+          <th>Description</th>
+          <th>salary</th>
+          <th>workHours</th>
+          <th>Options</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let jobOffer of jobOffers">
+          <td>{{jobOffer.id}}</td>
+          <td>{{jobOffer.position}}</td>
+          <td>{{jobOffer.description.length > 25 ? (jobOffer.description | slice : 0:25) + '...' : jobOffer.description}}</td>
+          <td>{{jobOffer.salary}}</td>
+          <td>{{jobOffer.workHours}}</td>
+          <td class="action-button-column">
+              <a title="Edit" (click)="editJobOffer(jobOffer.id)"><i class="fas fa-edit"></i> </a>
+              <a title="Delete" (click)="deleteJobOffer(jobOffer.id)" style="margin-left: 12px;"><i class="fas fa-trash-alt"></i> </a>
+          </td>
+        </tr>
+      </tbody>
+
+  </table>
+</div>

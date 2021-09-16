@@ -1,0 +1,39 @@
+<div class="container">
+  <div class="row justify-content-center">
+    <div class="col-6">
+      <div class="card" style="margin-top: 15%;">
+        <div class="card-body">
+          <h5 class="card-title text-center">Register</h5>
+          <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+            <div class="form-group">
+              <label for="exampleInputName">Full name</label>
+              <input type="email" class="form-control" id="exampleInputName" formControlName="fullName">
+            </div>
+            <div class="form-group">
+              <label for="exampleInputEmail">Email address</label>
+              <input type="email" class="form-control" id="exampleInputEmail" formControlName="email">
+              <small class="form-text text-muted">We'll never share your email with anyone else.</small>
+            </div>
+            <div class="form-group">
+              <label for="exampleInputPassword">Password</label>
+              <input type="password" class="form-control" id="exampleInputPassword" formControlName="password">
+            </div>
+            <div class="row mb-3">
+              <label class="col-sm-2 col-form-label">Role</label>
+              <div class="col-sm-3">
+                <div class="form-check" *ngFor="let role of roles;let index=index">
+                  <input class="form-check-input" type="radio" name="role" id="{{index}}" (change)="onRoleChange(role.role)">
+                  <label class="form-check-label" for="{{index}}">
+                    {{ role.role }}
+                  </label>
+                </div>
+              </div>
+            </div>
+            <button type="submit" class="btn btn-primary" [disabled]="!registerForm.valid">Submit</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
