@@ -32,6 +32,9 @@ export class JobOffersService {
         return this.http.get<JobOffer>(this.baseUrl + 'jobOffers/' + id);
     }
 
+    public jobOfferExists(id: number): Observable<boolean> {
+      return this.http.get<boolean>(this.baseUrl + `jobOffers/exists/` + id);
+    }
     // public searchBooksWithCategory(searchedValue: string): Observable<JobOffer[]> {
     //     return this.http.get<JobOffer[]>(`${this.baseUrl}jobOffers/search-book-with-category/${searchedValue}`);
     // }

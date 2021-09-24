@@ -3,7 +3,6 @@ import { HttpClient } from '@angular/common/http';
 import { Company } from '../_Models/Company';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { CompanyMapper } from './Mappers/CompanyMapper';
 
 @Injectable({
     providedIn: 'root'
@@ -24,12 +23,7 @@ export class CompanyService {
     }
 
     public getCompanies(): Observable<Company[]> {
-      return new Observable((observer) => {
-        this.http.get<Company[]>(this.baseUrl + `companies`).subscribe(
-          (_succ) => observer.next(CompanyMapper.toCompanyViewModel(_succ)),
-          (_error) => observer.error(_error)
-        );
-      });
+      return this.http.get<Company[]>(this.baseUrl + `companies`);
     }
 
     // tslint:disable-next-line: typedef

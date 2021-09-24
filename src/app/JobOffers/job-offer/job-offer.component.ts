@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { FormControl, FormGroup, NgForm, Validators } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { JobOffer } from 'src/app/_Models/JobOffer';
 import { JobOffersService } from 'src/app/_Services/JobOfferService';
-import { CompanyService } from 'src/app/_Services/CompanyService';
 import { Company } from 'src/app/_Models/Company';
+import { AllFunctions } from 'src/app/_Services/allFunctions';
 
 @Component({
   selector: 'app-job-offer',
@@ -15,13 +15,17 @@ export class JobOfferComponent implements OnInit {
 
   public jobOffer: JobOffer = new JobOffer();
   public companies!: Company[];
-
   public formGroup!: FormGroup;
 
+  isEdit = false;
+  companyId!: number;
+  user: any;
+  id!: number;
+
   constructor(public service: JobOffersService,
-              private companyService: CompanyService,
               private router: Router,
-              private route: ActivatedRoute) {
+              private route: ActivatedRoute,
+              private allFunction: AllFunctions) {
                 this.formGroup = new FormGroup({
                   position: new FormControl('', Validators.required),
                   description: new FormControl('',  Validators.required),
@@ -32,38 +36,27 @@ export class JobOfferComponent implements OnInit {
 
   ngOnInit() {
     this.resetForm();
-    let id;
+    this.companyId = this.allFunction.companyID;
+
     this.route.params.subscribe(params => {
-      id = params.id;
+      this.id = params.id;
     });
 
-    if (id != null) {
-      this.service.getJobOfferById(id).subscribe(jobOffer => {
+    if (this.id != null) {
+      this.isEdit = true;
+      this.service.getJobOfferById(this.id).subscribe(jobOffer => {
         this.jobOffer = jobOffer;
         this.formGroup.controls.position.setValue(this.jobOffer.position);
         this.formGroup.controls.description.setValue(this.jobOffer.description);
         this.formGroup.controls.salary.setValue(this.jobOffer.salary);
         this.formGroup.controls.workHours.setValue(this.jobOffer.workHours);
+        this.companyId = jobOffer.companyId;
       }, err => {
         // error
       });
     } else {
+      this.isEdit = false;
       this.resetForm();
-    }
-
-    this.companyService.getCompanies().subscribe(companies => {
-      this.companies = companies;
-    }, err => {
-      // err
-    });
-  }
-
-  public onSubmit(form: NgForm) {
-    form.value.companyId = Number(form.value.companyId);
-    if (form.value.id === 0) {
-      this.addJobOffer();
-    } else {
-      this.updateRecord(form);
     }
   }
 
@@ -72,7 +65,7 @@ export class JobOfferComponent implements OnInit {
     this.jobOffer.description = this.formGroup.controls.description.value;
     this.jobOffer.salary = this.formGroup.controls.salary.value;
     this.jobOffer.workHours = this.formGroup.controls.workHours.value;
-    this.jobOffer.companyId = Number(( document.getElementById('companyId') as HTMLSelectElement).value);
+    this.jobOffer.companyId = this.companyId;
 
     this.service.addJobOffer(this.jobOffer).subscribe(() => {
       // succ
@@ -83,16 +76,22 @@ export class JobOfferComponent implements OnInit {
     });
   }
 
-  public updateRecord(form: NgForm) {
-    this.service.updateJobOffer(form.form.value.id, form.form.value).subscribe(() => {
+  public editJobOffer() {
+    this.jobOffer.position = this.formGroup.controls.position.value;
+    this.jobOffer.description = this.formGroup.controls.description.value;
+    this.jobOffer.salary = this.formGroup.controls.salary.value;
+    this.jobOffer.workHours = this.formGroup.controls.workHours.value;
+    this.jobOffer.companyId = this.companyId;
+
+    this.service.updateJobOffer(this.id, this.jobOffer).subscribe(() => {
       // succ
       this.resetForm();
       this.router.navigate(['/joboffers']);
     }, () => {
       // errr
     });
-  }
 
+  }
   public cancel() {
     this.router.navigate(['/joboffers']);
   }

@@ -1,6 +1,8 @@
 export class Company {
   id!: number;
   name!: string;
-  URL!: string;
+  webURL!: string;
   logo!: string;
+  linkedin!: string;
+  aboutUs!: string;
 }

@@ -1,35 +1,27 @@
-import { Component, OnInit } from '@angular/core';
-import { Constants } from '../Helpers/constants';
+import { Injectable } from "@angular/core";
+import { Constants } from "../Helpers/constants";
 
-@Component({
-  selector: 'app-nav',
-  templateUrl: './nav.component.html',
-  styleUrls: ['./nav.component.css']
+@Injectable({
+  providedIn: 'root'
 })
-export class NavComponent implements OnInit {
+export class AllFunctions {
 
-  constructor() {}
-
-  ngOnInit(): void {
-  }
-
-  public onLogout(): void {
-    localStorage.removeItem(Constants.USER_KEY);
-    localStorage.clear();
-  }
-
-  get isUserLoggedIn() {
+  get isUserLoggedIn(): any {
     const user = localStorage.getItem(Constants.USER_KEY);
     return user && user.length > 0;
   }
 
-  get user() {
+  get user(): any {
     const user = JSON.parse(localStorage.getItem(Constants.USER_KEY)!);
     return user;
   }
 
   get userName(): string {
     return this.user.fullName;
+  }
+
+  get companyID(): number {
+    return this.user.companyId;
   }
 
   get isCompany(): boolean {
@@ -46,4 +38,6 @@ export class NavComponent implements OnInit {
     }
     return false;
   }
+
 }
+

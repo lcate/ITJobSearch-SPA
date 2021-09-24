@@ -39,13 +39,6 @@ export class CompanyComponent implements OnInit {
     if (form != null) {
       form.form.reset();
     }
-
-    this.formData = {
-      id: 0,
-      name: '',
-      URL: '',
-      logo: ''
-    };
   }
 
   public onSubmit(form: NgForm) {

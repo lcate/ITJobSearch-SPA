@@ -6,6 +6,7 @@ import { Role } from '../_Models/Role';
 import { ResponseCode } from '../Enums/ResponseCode';
 import { ResponseModel } from '../_Models/ResponseModel';
 import { Observable } from 'rxjs';
+import { User } from '../_Models/User';
 
 @Injectable({
   providedIn: 'root'
@@ -25,12 +26,16 @@ export class UserService {
     return this.httpClient.post(this.baseURL + 'login', body);
   }
 
-  public register(fullName: string, email: string, password: string, role: string | undefined) {
+  public register(fullName: string, email: string, password: string, role: string | undefined, webURL: string, logo: string, linkedin: string, aboutUs: string) {
     const body = {
       FullName: fullName,
       Email: email,
       Password: password,
-      Role: role
+      Role: role,
+      WebURL: webURL,
+      Logo: logo,
+      Linkedin: linkedin,
+      AboutUs: aboutUs
     };
 
     return this.httpClient.post<ResponseModel>(this.baseURL + 'registeruser', body);
@@ -57,5 +62,9 @@ Authorization: `Bearer ${userInfo?.token }`
       return roleList;
     }));
    }
+
+   public getUserByEmail(email: string): Observable<User> {
+    return this.httpClient.get<User>(this.baseURL + 'getuser/' + email);
+  }
 
 }

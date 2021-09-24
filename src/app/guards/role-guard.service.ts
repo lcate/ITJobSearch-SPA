@@ -3,17 +3,17 @@ import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot } from
 import { Constants } from '../Helpers/constants';
 
 @Injectable()
-export class AuthGuard implements CanActivate {
+export class RoleGuard implements CanActivate {
 
   constructor(private router: Router) {}
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
     const user = JSON.parse(localStorage.getItem(Constants.USER_KEY)!);
-    if (user) {
+    if (user.role === 'Company') {
       return true;
     }
     else {
-      this.router.navigate(['/login']);
+      this.router.navigate(['/joboffers']);
       return false;
     }
   }

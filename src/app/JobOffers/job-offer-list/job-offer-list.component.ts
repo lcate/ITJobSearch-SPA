@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { JobOffersService } from 'src/app/_Services/JobOfferService';
 import { ConfirmationDialogService } from 'src/app/_Services/confirmation-dialog.service';
 import { Subject } from 'rxjs';
+import { AllFunctions } from 'src/app/_Services/allFunctions';
 
 @Component({
   selector: 'app-job-offer-list',
@@ -12,22 +13,26 @@ import { Subject } from 'rxjs';
 export class JobOfferListComponent implements OnInit {
 
   public jobOffers: any;
-  public listComplete: any;
   public searchTerm!: string;
   public searchValueChanged: Subject<string> = new Subject<string>();
 
+  public isCompanyUser!: boolean;
+  public companyId!: number;
+
   constructor(private router: Router,
               private service: JobOffersService,
+              private allFunction: AllFunctions,
               private confirmationDialogService: ConfirmationDialogService) { }
 
   ngOnInit() {
     this.getValues();
+    this.isCompanyUser = this.allFunction.isCompany;
+    this.companyId = this.allFunction.companyID;
   }
 
   private getValues() {
     this.service.getJobOffers().subscribe(jobOffers => {
       this.jobOffers = jobOffers;
-      this.listComplete = jobOffers;
     });
   }
 

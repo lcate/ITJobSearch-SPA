@@ -3,9 +3,25 @@
     <div class="col-6">
       <div class="card" style="margin-top: 15%;">
         <div class="card-body">
-          <h5 class="card-title text-center">Register</h5>
-          <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
-            <div class="form-group">
+          <h5 class="card-title text-center">Register as:</h5>
+          <!-- Buttons -->
+          <div class="col">
+            <div class="row">
+              <div class="col-6">
+                <div class="row">
+                  <button class="btn btn-secondary btn-block" (click)="isUser()">User</button>
+                </div>
+              </div>
+              <div class="col-6">
+                <div class="row">
+                  <button class="btn btn-secondary btn-block" (click)="isCompany()">Company</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- User register -->
+          <form *ngIf="!isCompanyUser" [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+            <div class="form-group" style="margin-top: 5%;">
               <label for="exampleInputName">Full name</label>
               <input type="email" class="form-control" id="exampleInputName" formControlName="fullName">
             </div>
@@ -18,16 +34,38 @@
               <label for="exampleInputPassword">Password</label>
               <input type="password" class="form-control" id="exampleInputPassword" formControlName="password">
             </div>
-            <div class="row mb-3">
-              <label class="col-sm-2 col-form-label">Role</label>
-              <div class="col-sm-3">
-                <div class="form-check" *ngFor="let role of roles;let index=index">
-                  <input class="form-check-input" type="radio" name="role" id="{{index}}" (change)="onRoleChange(role.role)">
-                  <label class="form-check-label" for="{{index}}">
-                    {{ role.role }}
-                  </label>
-                </div>
-              </div>
+            <button type="submit" class="btn btn-primary" [disabled]="!registerForm.valid">Submit</button>
+          </form>
+          <!-- Company register -->
+          <form *ngIf="isCompanyUser" [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+            <div class="form-group" style="margin-top: 5%;">
+              <label for="exampleInputName">Company name</label>
+              <input type="text" class="form-control" id="exampleInputName" formControlName="fullName">
+            </div>
+            <div class="form-group">
+              <label for="exampleInputwebURL">Web URL</label>
+              <input type="text" class="form-control" id="exampleInputwebURL" formControlName="webURL">
+            </div>
+            <div class="form-group">
+              <label for="exampleInputlogo">Logo URL</label>
+              <input type="text" class="form-control" id="exampleInputlogo" formControlName="logo">
+            </div>
+            <div class="form-group">
+              <label for="exampleInputLinkedin">Linkedin</label>
+              <input type="text" class="form-control" id="exampleInputLinkedin" formControlName="linkedin">
+            </div>
+            <div class="form-group">
+              <label for="exampleInputaboutUs">About Us</label>
+              <input type="text" class="form-control" id="exampleInputaboutUs" formControlName="aboutUs">
+            </div>
+            <div class="form-group">
+              <label for="exampleInputEmail">Email address</label>
+              <input type="email" class="form-control" id="exampleInputEmail" formControlName="email">
+              <small class="form-text text-muted">We'll never share your email with anyone else.</small>
+            </div>
+            <div class="form-group">
+              <label for="exampleInputPassword">Password</label>
+              <input type="password" class="form-control" id="exampleInputPassword" formControlName="password">
             </div>
             <button type="submit" class="btn btn-primary" [disabled]="!registerForm.valid">Submit</button>
           </form>
@@ -36,4 +74,3 @@
     </div>
   </div>
 </div>
-

@@ -16,10 +16,13 @@ import { ConfirmationDialogComponent } from './confirmation-dialog/confirmation-
 import { DatepickerPopupComponent } from './datepicker/datepicker-popup';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { JwtModule } from '@auth0/angular-jwt';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 import { AuthGuard } from './guards/auth-guard.service';
+import { RoleGuard } from './guards/role-guard.service';
+import { CompanyIdGuard } from './guards/companyId-guard.service';
+import { JobOfferExistsGuard } from './guards/JobOfferExists-guard.service';
+import { ProfileComponent } from './Profile/profile/profile.component';
 
 @NgModule({
   declarations: [
@@ -33,7 +36,8 @@ import { AuthGuard } from './guards/auth-guard.service';
     ConfirmationDialogComponent,
     DatepickerPopupComponent,
     LoginComponent,
-    RegisterComponent
+    RegisterComponent,
+    ProfileComponent
   ],
   imports: [
     BrowserModule,
@@ -47,7 +51,10 @@ import { AuthGuard } from './guards/auth-guard.service';
     CompanyService,
     JobOffersService,
     ConfirmationDialogService,
-    AuthGuard
+    AuthGuard,
+    RoleGuard,
+    CompanyIdGuard,
+    JobOfferExistsGuard
   ],
   bootstrap: [AppComponent]
 })
