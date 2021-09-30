@@ -27,7 +27,8 @@
           <td class="action-button-column">
               <a *ngIf="jobOffer.companyId == companyId" title="Edit" (click)="editJobOffer(jobOffer.id)"><i class="fas fa-edit"></i> </a>
               <a *ngIf="jobOffer.companyId == companyId" title="Delete" (click)="deleteJobOffer(jobOffer.id)" style="margin-left: 12px;"><i class="fas fa-trash-alt"></i> </a>
-          </td>
+              <button *ngIf="!isCompanyUser" class="btn btn-primary" (click)="apply(jobOffer.id)">Apply</button>
+            </td>
         </tr>
       </tbody>
 

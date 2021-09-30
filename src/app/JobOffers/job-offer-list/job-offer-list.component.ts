@@ -4,6 +4,7 @@ import { JobOffersService } from 'src/app/_Services/JobOfferService';
 import { ConfirmationDialogService } from 'src/app/_Services/confirmation-dialog.service';
 import { Subject } from 'rxjs';
 import { AllFunctions } from 'src/app/_Services/allFunctions';
+import { JobApplicationService } from 'src/app/_Services/JobApplicationService';
 
 @Component({
   selector: 'app-job-offer-list',
@@ -18,16 +19,20 @@ export class JobOfferListComponent implements OnInit {
 
   public isCompanyUser!: boolean;
   public companyId!: number;
+  public userEmail!: string;
+  public isApplied!: boolean;
 
   constructor(private router: Router,
               private service: JobOffersService,
               private allFunction: AllFunctions,
+              private jobApplicationService: JobApplicationService,
               private confirmationDialogService: ConfirmationDialogService) { }
 
   ngOnInit() {
     this.getValues();
     this.isCompanyUser = this.allFunction.isCompany;
     this.companyId = this.allFunction.companyID;
+    this.userEmail = this.allFunction.user.email;
   }
 
   private getValues() {
@@ -55,6 +60,18 @@ export class JobOfferListComponent implements OnInit {
             // error
           }))
       .catch(() => '');
+  }
+
+  public apply(jobOfferId: number){
+    this.jobApplicationService.addJobApplication(this.userEmail, jobOfferId)
+      .subscribe( x => {
+        if (x) {
+          this.isApplied = true;
+        }
+      },
+      error => {
+        this.isApplied = false;
+      });
   }
 
 

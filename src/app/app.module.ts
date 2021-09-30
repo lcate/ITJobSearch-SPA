@@ -23,6 +23,7 @@ import { RoleGuard } from './guards/role-guard.service';
 import { CompanyIdGuard } from './guards/companyId-guard.service';
 import { JobOfferExistsGuard } from './guards/JobOfferExists-guard.service';
 import { ProfileComponent } from './Profile/profile/profile.component';
+import { JobApplicationService } from './_Services/JobApplicationService';
 
 @NgModule({
   declarations: [
@@ -50,6 +51,7 @@ import { ProfileComponent } from './Profile/profile/profile.component';
   providers: [
     CompanyService,
     JobOffersService,
+    JobApplicationService,
     ConfirmationDialogService,
     AuthGuard,
     RoleGuard,
