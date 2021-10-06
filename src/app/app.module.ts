@@ -24,6 +24,9 @@ import { CompanyIdGuard } from './guards/companyId-guard.service';
 import { JobOfferExistsGuard } from './guards/JobOfferExists-guard.service';
 import { ProfileComponent } from './Profile/profile/profile.component';
 import { JobApplicationService } from './_Services/JobApplicationService';
+import { UploadComponent } from './upload/upload.component';
+import { DownloadComponent } from './download/download.component';
+import { JobApplicationComponent } from './job-application/job-application.component';
 
 @NgModule({
   declarations: [
@@ -38,7 +41,10 @@ import { JobApplicationService } from './_Services/JobApplicationService';
     DatepickerPopupComponent,
     LoginComponent,
     RegisterComponent,
-    ProfileComponent
+    ProfileComponent,
+    UploadComponent,
+    DownloadComponent,
+    JobApplicationComponent
   ],
   imports: [
     BrowserModule,

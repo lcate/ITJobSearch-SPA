@@ -21,6 +21,7 @@ export class JobOfferListComponent implements OnInit {
   public companyId!: number;
   public userEmail!: string;
   public isApplied!: boolean;
+  public response!: {dbPath: ''};
 
   constructor(private router: Router,
               private service: JobOffersService,
@@ -63,7 +64,7 @@ export class JobOfferListComponent implements OnInit {
   }
 
   public apply(jobOfferId: number){
-    this.jobApplicationService.addJobApplication(this.userEmail, jobOfferId)
+    this.jobApplicationService.addJobApplication(this.userEmail, jobOfferId, this.response.dbPath)
       .subscribe( x => {
         if (x) {
           this.isApplied = true;
@@ -74,5 +75,8 @@ export class JobOfferListComponent implements OnInit {
       });
   }
 
+  public uploadFinished = (event: any) => {
+    this.response = event;
+  }
 
 }

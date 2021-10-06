@@ -28,6 +28,7 @@
               <a *ngIf="jobOffer.companyId == companyId" title="Edit" (click)="editJobOffer(jobOffer.id)"><i class="fas fa-edit"></i> </a>
               <a *ngIf="jobOffer.companyId == companyId" title="Delete" (click)="deleteJobOffer(jobOffer.id)" style="margin-left: 12px;"><i class="fas fa-trash-alt"></i> </a>
               <button *ngIf="!isCompanyUser" class="btn btn-primary" (click)="apply(jobOffer.id)">Apply</button>
+              <app-upload (onUploadFinished)="uploadFinished($event)" *ngIf="!isCompanyUser"></app-upload>
             </td>
         </tr>
       </tbody>

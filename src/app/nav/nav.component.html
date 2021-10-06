@@ -3,6 +3,7 @@
 
   <ul class="navbar-nav mr-auto">
     <a class="nav-link" [routerLink]="['/joboffers']" >Joboffers</a>
+    <a class="nav-link" [routerLink]="['/jobapplications']" >Job Applications</a>
     <a class="nav-link" [routerLink]="['/companies']" *ngIf="!isUser && isUserLoggedIn">Companies</a>
   </ul>
   <ul class="nav navbar-nav navbar-right">
