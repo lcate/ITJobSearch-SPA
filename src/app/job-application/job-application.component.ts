@@ -22,23 +22,12 @@ export class JobApplicationComponent implements OnInit {
     this.isCompanyUser = this.allFunction.isCompany;
     this.companyId = this.allFunction.companyID;
     this.userEmail = this.allFunction.user.email;
-    this.getJobApplicationsForUser();
+    this.getJobApplicationsForUser(this.userEmail);
   }
 
-  public getJobApplicationsForUser() {
-    this.jobAppService.getJobApplicationsForUser(this.userEmail).subscribe(
+  public getJobApplicationsForUser(userEmail: string) {
+    this.jobAppService.getJobApplicationsForUser(userEmail).subscribe(
       (jobApps: any) => {
-        this.jobApplications = jobApps;
-      },
-      (error) => {
-        console.log(error);
-      }
-    )
-  }
-
-  public getAllJobApplications() {
-    this.jobAppService.getJobApplications().subscribe(
-      (jobApps) => {
         this.jobApplications = jobApps;
       },
       (error) => {

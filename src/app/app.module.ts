@@ -27,6 +27,11 @@ import { JobApplicationService } from './_Services/JobApplicationService';
 import { UploadComponent } from './upload/upload.component';
 import { DownloadComponent } from './download/download.component';
 import { JobApplicationComponent } from './job-application/job-application.component';
+import { JobApplicationForOfferComponent } from './job-application-for-offer/job-application-for-offer.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MatSliderModule } from '@angular/material/slider';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { RouterModule } from '@angular/router';
 
 @NgModule({
   declarations: [
@@ -44,7 +49,8 @@ import { JobApplicationComponent } from './job-application/job-application.compo
     ProfileComponent,
     UploadComponent,
     DownloadComponent,
-    JobApplicationComponent
+    JobApplicationComponent,
+    JobApplicationForOfferComponent
   ],
   imports: [
     BrowserModule,
@@ -52,7 +58,11 @@ import { JobApplicationComponent } from './job-application/job-application.compo
     NgbModule,
     FormsModule,
     HttpClientModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MatSliderModule,
+    BrowserAnimationsModule,
+    MatSlideToggleModule,
+    RouterModule
   ],
   providers: [
     CompanyService,

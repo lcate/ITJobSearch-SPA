@@ -13,12 +13,16 @@ export class JobApplicationService {
     constructor(private http: HttpClient) { }
 
     public getJobApplicationsForUser(userEmail: string) {
-      return this.http.get(this.baseUrl + 'jobapplications/' + userEmail);
+      return this.http.get(this.baseUrl + 'jobapplication/' + userEmail);
     }
 
     public getJobApplications(): Observable<JobApplication[]> {
-      return this.http.get<JobApplication[]>(this.baseUrl + 'jobapplications');
+      return this.http.get<JobApplication[]>(this.baseUrl + 'jobapplication');
     }
+
+    public getJobApplicationsByJobOfferId(jobOfferId: number) {
+      return this.http.get(this.baseUrl + 'jobapplication/joboffer/' + jobOfferId);
+  }
 
     public addJobApplication(userEmail: string, jobOfferId: number, imgPath: string) {
       const body = {
@@ -26,7 +30,7 @@ export class JobApplicationService {
         JobOfferId: jobOfferId,
         ImgPath: imgPath
       };
-      return this.http.post(this.baseUrl + 'jobapplications', body);
+      return this.http.post(this.baseUrl + 'jobapplication', body);
     }
 
 }

@@ -13,7 +13,7 @@ export class JobOffersService {
     constructor(private http: HttpClient) { }
 
     public addJobOffer(jobOffer: JobOffer) {
-        return this.http.post(this.baseUrl + 'jobOffers', jobOffer);
+        return this.http.post(this.baseUrl + 'joboffers', jobOffer);
     }
 
     public updateJobOffer(id: number, jobOffer: JobOffer) {
@@ -21,20 +21,25 @@ export class JobOffersService {
     }
 
     public getJobOffers(): Observable<JobOffer[]> {
-        return this.http.get<JobOffer[]>(this.baseUrl + `jobOffers`);
+        return this.http.get<JobOffer[]>(this.baseUrl + `joboffers`);
     }
 
     public deleteJobOffer(id: number) {
-        return this.http.delete(this.baseUrl + 'jobOffers/' + id);
+        return this.http.delete(this.baseUrl + 'joboffers/' + id);
+    }
+
+    public getJobOffersForCompany(companyId: number) {
+      return this.http.get(this.baseUrl + 'joboffers/company/' + companyId);
     }
 
     public getJobOfferById(id: number): Observable<JobOffer> {
-        return this.http.get<JobOffer>(this.baseUrl + 'jobOffers/' + id);
+        return this.http.get<JobOffer>(this.baseUrl + 'joboffers/' + id);
     }
 
     public jobOfferExists(id: number): Observable<boolean> {
-      return this.http.get<boolean>(this.baseUrl + `jobOffers/exists/` + id);
+      return this.http.get<boolean>(this.baseUrl + `joboffers/exists/` + id);
     }
+
     // public searchBooksWithCategory(searchedValue: string): Observable<JobOffer[]> {
     //     return this.http.get<JobOffer[]>(`${this.baseUrl}jobOffers/search-book-with-category/${searchedValue}`);
     // }

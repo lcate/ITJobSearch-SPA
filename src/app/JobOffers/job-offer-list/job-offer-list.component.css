@@ -1,3 +1,7 @@
 .jumbtron {
   padding-top: 60px;
 }
+
+.clickable {
+  cursor: pointer;
+}

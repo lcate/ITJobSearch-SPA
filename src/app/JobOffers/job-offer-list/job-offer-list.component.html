@@ -1,10 +1,19 @@
 <div class="jumbtron">
-  <h1 class="display-4 text-center">Job offer</h1>
+  <h1 class="display-4 text-center">Job offers</h1>
 </div>
 
 <div class="col-md-12">
   <button type="button" class="btn btn-success" (click)="addJobOffer()" *ngIf="isCompanyUser">New job offer</button>
   <hr/>
+
+  <!-- toggle all offers <-> my offers -->
+  <div *ngIf="isCompanyUser">
+    <span style="margin-right: 2%;">All job offers</span>
+    <mat-slide-toggle (change)="changed()" [(ngModel)]="checked"></mat-slide-toggle>
+    <span style="margin-left: 2%;">My job offers</span>
+  </div>
+  <!-- end toggle -->
+
 
   <table class="table table-condensed table-bordered table-striped table-hover">
       <thead>
@@ -18,7 +27,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let jobOffer of jobOffers">
+        <tr *ngFor="let jobOffer of jobOffers" class="clickable" [routerLink]="['/jobapplications/', jobOffer.id]">
           <td>{{jobOffer.id}}</td>
           <td>{{jobOffer.position}}</td>
           <td>{{jobOffer.description.length > 25 ? (jobOffer.description | slice : 0:25) + '...' : jobOffer.description}}</td>

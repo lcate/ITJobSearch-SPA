@@ -6,6 +6,7 @@ import { CompanyIdGuard } from './guards/companyId-guard.service';
 import { JobOfferExistsGuard } from './guards/JobOfferExists-guard.service';
 import { RoleGuard } from './guards/role-guard.service';
 import { HomeComponent } from './home/home.component';
+import { JobApplicationForOfferComponent } from './job-application-for-offer/job-application-for-offer.component';
 import { JobApplicationComponent } from './job-application/job-application.component';
 import { JobOfferListComponent } from './JobOffers/job-offer-list/job-offer-list.component';
 import { JobOfferComponent } from './JobOffers/job-offer/job-offer.component';
@@ -23,6 +24,7 @@ const routes: Routes = [
   { path: 'joboffer', component: JobOfferComponent, canActivate: [RoleGuard] },
   { path: 'joboffer/:id', component: JobOfferComponent, canActivate: [JobOfferExistsGuard, CompanyIdGuard] },
   { path: 'jobapplications', component: JobApplicationComponent },
+  { path: 'jobapplications/:id', component: JobApplicationForOfferComponent, canActivate: [JobOfferExistsGuard, CompanyIdGuard]  },
   { path: 'register', component: RegisterComponent },
   { path: 'login', component: LoginComponent },
   { path: '**', redirectTo: 'home', pathMatch: 'full' }

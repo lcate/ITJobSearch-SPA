@@ -5,6 +5,7 @@ import { ConfirmationDialogService } from 'src/app/_Services/confirmation-dialog
 import { Subject } from 'rxjs';
 import { AllFunctions } from 'src/app/_Services/allFunctions';
 import { JobApplicationService } from 'src/app/_Services/JobApplicationService';
+import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 
 @Component({
   selector: 'app-job-offer-list',
@@ -22,7 +23,7 @@ export class JobOfferListComponent implements OnInit {
   public userEmail!: string;
   public isApplied!: boolean;
   public response!: {dbPath: ''};
-
+  checked = false;
   constructor(private router: Router,
               private service: JobOffersService,
               private allFunction: AllFunctions,
@@ -75,8 +76,27 @@ export class JobOfferListComponent implements OnInit {
       });
   }
 
+
+  public getJobOffersForCompany(companyId: number) {
+    this.service.getJobOffersForCompany(companyId).subscribe(
+      (jobOffers: any) => {
+        this.jobOffers = jobOffers;
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
+  }
+
   public uploadFinished = (event: any) => {
     this.response = event;
   }
 
+  changed(){
+    if (this.checked) {
+      this.getJobOffersForCompany(this.companyId);
+    } else {
+      this.getValues();
+    }
+  }
 }
