@@ -8,6 +8,7 @@ import { JobApplicationService } from 'src/app/_Services/JobApplicationService';
 import { JobOffer } from 'src/app/_Models/JobOffer';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { AddEditJobOfferDialogComponent } from 'src/app/add-edit-job-offer-dialog/add-edit-job-offer-dialog.component';
+import { PageEvent } from '@angular/material/paginator';
 
 @Component({
   selector: 'app-job-offer-list',
@@ -15,6 +16,14 @@ import { AddEditJobOfferDialogComponent } from 'src/app/add-edit-job-offer-dialo
   styleUrls: ['./job-offer-list.component.css']
 })
 export class JobOfferListComponent implements OnInit {
+  // MatPaginator Inputs
+  length = 100;
+  pageSize = 5;
+  pageSizeOptions: number[] = [5, 10, 25, 100];
+  pageIndex = 0;
+
+  // MatPaginator Output
+  pageEvent!: PageEvent;
 
   public jobOffers: JobOffer[] = [];
   public filteredJobOffers: JobOffer[] = [];
@@ -24,9 +33,6 @@ export class JobOfferListComponent implements OnInit {
   workHours = 'Any';
   workType = 'Any';
   salary = 0;
-
-  public searchTerm!: string;
-  public searchValueChanged: Subject<string> = new Subject<string>();
 
   public isCompanyUser!: boolean;
   public companyId!: number;
@@ -54,6 +60,8 @@ export class JobOfferListComponent implements OnInit {
     this.service.getJobOffers().subscribe(jobOffers => {
       this.jobOffers = jobOffers;
       this.filteredJobOffers = jobOffers;
+      this.length = jobOffers.length;
+      this.selectionChange();
     });
   }
 
@@ -169,7 +177,8 @@ export class JobOfferListComponent implements OnInit {
                                           && (j.workHours === this.workHours || this.workHours === 'Any')
                                           && (j.workType === this.workType || this.workType === 'Any')
                                           && j.salary >= this.salary);
-
+    this.length = this.filteredJobOffers.length;
+    this.filteredJobOffers = this.filteredJobOffers.slice(this.pageSize * this.pageIndex, this.pageSize * (this.pageIndex + 1));
   }
 
   salaryChange(event: number | null) {
@@ -199,5 +208,18 @@ export class JobOfferListComponent implements OnInit {
     } else {
       return 'https://loverary.files.wordpress.com/2013/10/facebook-default-no-profile-pic.jpg?w=778';
     }
+  }
+
+  setPageSizeOptions(setPageSizeOptionsInput: string) {
+    if (setPageSizeOptionsInput) {
+      this.pageSizeOptions = setPageSizeOptionsInput.split(',').map(str => +str);
+    }
+  }
+
+  public getServerData(event: PageEvent){
+    this.pageIndex = event.pageIndex;
+    this.pageSize = event.pageSize;
+    this.selectionChange();
+    return event;
   }
 }

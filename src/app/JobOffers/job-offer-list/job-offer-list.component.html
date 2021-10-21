@@ -93,4 +93,10 @@
         </mat-card>
       </div>
     </div>
+    <mat-paginator [length]="length"
+                   [pageSize]="pageSize"
+                   [pageSizeOptions]="pageSizeOptions"
+                   (page)="pageEvent = getServerData($event)"
+                   aria-label="Select page">
+    </mat-paginator>
 </div>
