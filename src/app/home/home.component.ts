@@ -6,26 +6,15 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit {
+  slides = [
+    {image: 'https://cdn.mos.cms.futurecdn.net/vZLMcEg5JqfGeXydVkkxhk-970-80.jpg.webp'},
+    {image: 'https://thumbs.dreamstime.com/z/web-design-concept-tiny-people-building-webpage-website-interface-design-software-development-process-programming-coding-seo-227595659.jpg'},
+    {image: 'https://miro.medium.com/max/2000/0*mfUNFSHyrXnH7ZKf'}
+  ];
 
   constructor() {}
 
   ngOnInit(): void {
   }
-
-//   isUserAuthenticated() {
-//     const token: string | null = localStorage.getItem('jwt');
-//     if (token && !this.jwtHelper.isTokenExpired(token)) {
-//       console.log(this.jwtHelper.decodeToken(token));
-//       return true;
-//     }
-//     else {
-//       return false;
-//     }
-//   }
-
-
-//   logOut() {
-//     localStorage.removeItem('jwt');
-//  }
 
 }

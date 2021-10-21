@@ -13,7 +13,7 @@ export class JobApplicationComponent implements OnInit {
   public companyId!: number;
   public userEmail!: string;
 
-  jobApplications!: JobApplication[];
+  jobApplications!: any;
 
   constructor(private jobAppService: JobApplicationService,
               private allFunction: AllFunctions) { }

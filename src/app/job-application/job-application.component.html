@@ -1,22 +1,4 @@
 <div *ngIf="!isCompanyUser" class="container" style="margin-top:5%">
-  <table class="table table-condensed table-bordered table-striped table-hover">
-    <thead>
-      <tr>
-        <th>id</th>
-        <th>joboffer id</th>
-        <th>User id</th>
-        <th>CV</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let jobapplication of jobApplications">
-        <td>{{jobapplication.id}}</td>
-        <td>{{jobapplication.jobOfferId}}</td>
-        <td>{{jobapplication.userId}}</td>
-        <td><img [src]="createImgPath(jobapplication.imgPath)" style="width:60px; height:60px;">
-            <app-download [fileUrl]="jobapplication.imgPath"></app-download>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+  <h1 class="display-4 text-center">My applications for job offers</h1>
+  <app-job-application-shared-table [jobApplications]="jobApplications" [isCompanyUser]="isCompanyUser"></app-job-application-shared-table>
 </div>

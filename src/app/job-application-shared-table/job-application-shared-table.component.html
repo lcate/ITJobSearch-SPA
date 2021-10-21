@@ -1,0 +1,26 @@
+<table class="table table-condensed table-bordered table-striped table-hover">
+  <thead>
+    <tr>
+      <th>id</th>
+      <th>joboffer id</th>
+      <th>User name</th>
+      <th>CV</th>
+      <th>Status</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let jobApplication of jobApplications" class="clickable" [routerLink]="['/jobapplications/details/', jobApplication.id]">
+      <td>{{jobApplication.id}}</td>
+      <td>{{jobApplication.jobOfferId}}</td>
+      <td>{{jobApplication.user.fullName}}</td>
+      <td>
+          <app-download [fileUrl]="jobApplication.imgPath"></app-download>
+      </td>
+      <td>
+          <span *ngIf="jobApplication.status == 0" class="badge badge-pill badge-warning badges-big">Pending</span>
+          <span *ngIf="jobApplication.status == 1" class="badge badge-pill badge-success badges-big">Hired</span>
+          <span *ngIf="jobApplication.status == 2" class="badge badge-pill badge-danger badges-big">Declined</span>
+      </td>
+    </tr>
+  </tbody>
+</table>

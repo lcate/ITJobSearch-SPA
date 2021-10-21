@@ -16,6 +16,10 @@ export class JobApplicationService {
       return this.http.get(this.baseUrl + 'jobapplication/' + userEmail);
     }
 
+    public getJobApplicationById(id: number) {
+      return this.http.get(this.baseUrl + 'jobapplication/byid/' + id);
+    }
+
     public getJobApplications(): Observable<JobApplication[]> {
       return this.http.get<JobApplication[]>(this.baseUrl + 'jobapplication');
     }
@@ -31,6 +35,14 @@ export class JobApplicationService {
         ImgPath: imgPath
       };
       return this.http.post(this.baseUrl + 'jobapplication', body);
+    }
+
+    public updateStatusForJobApplication(newStatus: number, jobApplicationId: number) {
+      const body = {
+        NewStatus: newStatus,
+        JobApplicationId: jobApplicationId
+      };
+      return this.http.put(this.baseUrl + 'jobapplication/updatestatus', body);
     }
 
 }

@@ -1,22 +1,16 @@
 <div class="container" style="margin-top:5%">
-  <table class="table table-condensed table-bordered table-striped table-hover">
-    <thead>
-      <tr>
-        <th>id</th>
-        <th>joboffer id</th>
-        <th>User name</th>
-        <th>CV</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let jobapplication of jobApplications">
-        <td>{{jobapplication.id}}</td>
-        <td>{{jobapplication.jobOfferId}}</td>
-        <td>{{jobapplication.user.fullName}}</td>
-        <td><img [src]="createImgPath(jobapplication.imgPath)" style="width:60px; height:60px;">
-            <app-download [fileUrl]="jobapplication.imgPath"></app-download>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+
+  <div class="card bg-light mb-3">
+    <div class="card-header">{{jobOffer.position}}</div>
+    <div class="card-body">
+      <h5 class="card-title">{{jobOffer.experience}}</h5>
+      <p class="card-text">{{jobOffer.salary}}</p>
+      <p class="card-text">{{jobOffer.workHours}}</p>
+      <p class="card-text">{{jobOffer.workType}}</p>
+      <p class="card-text">{{jobOffer.description}}</p>
+    </div>
+  </div>
+
+  <!-- <app-job-application-shared-table *ngIf="isCompanyUser && jobOffer.companyId == companyID && jobApplications.length > 0" [jobApplications]="jobApplications" [isCompanyUser]="isCompanyUser"></app-job-application-shared-table> -->
+  <app-comment *ngIf="!isCompanyUser && jobApplications.length > 0"></app-comment>
 </div>

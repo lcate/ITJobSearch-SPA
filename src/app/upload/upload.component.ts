@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
 import { HttpEventType, HttpClient } from '@angular/common/http';
 import { FileService } from '../_Services/file.service';
 
@@ -8,9 +8,12 @@ import { FileService } from '../_Services/file.service';
   styleUrls: ['./upload.component.css']
 })
 export class UploadComponent implements OnInit {
-  public progress!: number;
-  public message!: string;
+
+  @Input() public message!: string;
+
   @Output() public onUploadFinished = new EventEmitter();
+
+  public progress!: number;
 
   constructor(private fileService: FileService) { }
 

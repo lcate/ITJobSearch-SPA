@@ -26,6 +26,7 @@ export class UserService {
     return this.httpClient.post(this.baseURL + 'login', body);
   }
 
+  // tslint:disable-next-line: max-line-length
   public register(fullName: string, email: string, password: string, role: string | undefined, webURL: string, logo: string, linkedin: string, aboutUs: string) {
     const body = {
       FullName: fullName,
@@ -65,6 +66,9 @@ Authorization: `Bearer ${userInfo?.token }`
 
    public getUserByEmail(email: string): Observable<User> {
     return this.httpClient.get<User>(this.baseURL + 'getuser/' + email);
-  }
+   }
 
+   public updateUserProfile(email: string, user: any) {
+    return this.httpClient.put(this.baseURL + 'update/' + email, user);
+}
 }

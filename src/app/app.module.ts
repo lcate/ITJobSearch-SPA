@@ -8,7 +8,6 @@ import { JobOffersService } from './_Services/JobOfferService';
 import { ConfirmationDialogService } from './_Services/confirmation-dialog.service';
 import { CompanyComponent } from './Companies/company/company.component';
 import { CompanyListComponent } from './Companies/company-list/company-list.component';
-import { JobOfferComponent } from './JobOffers/job-offer/job-offer.component';
 import { JobOfferListComponent } from './JobOffers/job-offer-list/job-offer-list.component';
 import { HomeComponent } from './home/home.component';
 import { NavComponent } from './nav/nav.component';
@@ -32,13 +31,27 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatSliderModule } from '@angular/material/slider';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { RouterModule } from '@angular/router';
+import { CommentsComponent } from './comment/comment.component';
+import { CommentService } from './_Services/CommentService';
+import { JobApplicationSharedTableComponent } from './job-application-shared-table/job-application-shared-table.component';
+import {MatSelectModule} from '@angular/material/select';
+import {MatCardModule} from '@angular/material/card';
+import {MatIconModule} from '@angular/material/icon';
+import {MatButtonModule} from '@angular/material/button';
+import {MatInputModule} from '@angular/material/input';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import {MatDialogModule} from '@angular/material/dialog';
+import { AddEditJobOfferDialogComponent } from './add-edit-job-offer-dialog/add-edit-job-offer-dialog.component';
+import { MatCarouselModule } from '@ngmodule/material-carousel';
+import {MatTabsModule} from '@angular/material/tabs';
+import {MatPaginatorModule} from '@angular/material/paginator';
+
 
 @NgModule({
   declarations: [
     AppComponent,
     CompanyComponent,
     CompanyListComponent,
-    JobOfferComponent,
     JobOfferListComponent,
     HomeComponent,
     NavComponent,
@@ -50,7 +63,10 @@ import { RouterModule } from '@angular/router';
     UploadComponent,
     DownloadComponent,
     JobApplicationComponent,
-    JobApplicationForOfferComponent
+    JobApplicationForOfferComponent,
+    CommentsComponent,
+    JobApplicationSharedTableComponent,
+    AddEditJobOfferDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -62,7 +78,17 @@ import { RouterModule } from '@angular/router';
     MatSliderModule,
     BrowserAnimationsModule,
     MatSlideToggleModule,
-    RouterModule
+    RouterModule,
+    MatSelectModule,
+    MatCardModule,
+    MatIconModule,
+    MatButtonModule,
+    MatInputModule,
+    MatProgressSpinnerModule,
+    MatDialogModule,
+    MatCarouselModule,
+    MatTabsModule,
+    MatPaginatorModule
   ],
   providers: [
     CompanyService,
@@ -72,8 +98,10 @@ import { RouterModule } from '@angular/router';
     AuthGuard,
     RoleGuard,
     CompanyIdGuard,
-    JobOfferExistsGuard
+    JobOfferExistsGuard,
+    CommentService
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  entryComponents: [AddEditJobOfferDialogComponent]
 })
 export class AppModule { }

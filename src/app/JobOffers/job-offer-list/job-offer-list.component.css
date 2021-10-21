@@ -1,7 +1,16 @@
-.jumbtron {
-  padding-top: 60px;
+.pading {
+  padding-top: 4%;
 }
 
 .clickable {
   cursor: pointer;
 }
+
+mat-slider {
+  width: 80%;
+}
+
+.vl {
+  border-left: 2px solid gray;
+}
+

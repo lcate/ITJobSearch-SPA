@@ -5,7 +5,9 @@ import { ConfirmationDialogService } from 'src/app/_Services/confirmation-dialog
 import { Subject } from 'rxjs';
 import { AllFunctions } from 'src/app/_Services/allFunctions';
 import { JobApplicationService } from 'src/app/_Services/JobApplicationService';
-import { MatSlideToggleChange } from '@angular/material/slide-toggle';
+import { JobOffer } from 'src/app/_Models/JobOffer';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { AddEditJobOfferDialogComponent } from 'src/app/add-edit-job-offer-dialog/add-edit-job-offer-dialog.component';
 
 @Component({
   selector: 'app-job-offer-list',
@@ -14,7 +16,15 @@ import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 })
 export class JobOfferListComponent implements OnInit {
 
-  public jobOffers: any;
+  public jobOffers: JobOffer[] = [];
+  public filteredJobOffers: JobOffer[] = [];
+  public jobOffer: JobOffer = new JobOffer();
+  experience = 'Any';
+  position = 'Any';
+  workHours = 'Any';
+  workType = 'Any';
+  salary = 0;
+
   public searchTerm!: string;
   public searchValueChanged: Subject<string> = new Subject<string>();
 
@@ -24,31 +34,96 @@ export class JobOfferListComponent implements OnInit {
   public isApplied!: boolean;
   public response!: {dbPath: ''};
   checked = false;
+
   constructor(private router: Router,
               private service: JobOffersService,
               private allFunction: AllFunctions,
               private jobApplicationService: JobApplicationService,
-              private confirmationDialogService: ConfirmationDialogService) { }
+              private confirmationDialogService: ConfirmationDialogService,
+              private dialog: MatDialog) {
+               }
 
   ngOnInit() {
-    this.getValues();
+    this.getJobOffers();
     this.isCompanyUser = this.allFunction.isCompany;
     this.companyId = this.allFunction.companyID;
     this.userEmail = this.allFunction.user.email;
   }
 
-  private getValues() {
+  private getJobOffers() {
     this.service.getJobOffers().subscribe(jobOffers => {
       this.jobOffers = jobOffers;
+      this.filteredJobOffers = jobOffers;
     });
   }
 
-  public addJobOffer() {
-    this.router.navigate(['/joboffer']);
-  }
+  addJobOffer() {
+    const dialogConfig = new MatDialogConfig();
+
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+
+    dialogConfig.data = {
+      isEdit: false,
+      jobOffer: null
+    };
+
+    const dialogRef = this.dialog.open(AddEditJobOfferDialogComponent, dialogConfig);
+
+    dialogRef.afterClosed()
+      .subscribe((data) => {
+        this.jobOffer.experience = data.experience;
+        this.jobOffer.position = data.position;
+        this.jobOffer.workHours = data.workHours;
+        this.jobOffer.workType = data.workType;
+        this.jobOffer.description = data.description;
+        this.jobOffer.salary = data.salary;
+        this.jobOffer.companyId = this.companyId;
+
+        this.service.addJobOffer(this.jobOffer).subscribe(() => {
+          // succ
+          this.getJobOffers();
+        }, () => {
+          // errr
+        });
+      });
+    }
 
   public editJobOffer(jobOfferId: number) {
-    this.router.navigate(['/joboffer/' + jobOfferId]);
+    this.service.getJobOfferById(jobOfferId).subscribe(jobOffer => {
+      this.jobOffer = jobOffer;
+      const dialogConfig = new MatDialogConfig();
+
+      dialogConfig.disableClose = true;
+      dialogConfig.autoFocus = true;
+
+      dialogConfig.data = {
+        isEdit: true,
+        jobOffer: this.jobOffer
+      };
+
+      const dialogRef = this.dialog.open(AddEditJobOfferDialogComponent, dialogConfig);
+
+      dialogRef.afterClosed()
+        .subscribe((data) => {
+          this.jobOffer.experience = data.experience;
+          this.jobOffer.position = data.position;
+          this.jobOffer.workHours = data.workHours;
+          this.jobOffer.workType = data.workType;
+          this.jobOffer.description = data.description;
+          this.jobOffer.salary = data.salary;
+          this.jobOffer.companyId = this.companyId;
+
+          this.service.updateJobOffer(jobOfferId, this.jobOffer).subscribe(() => {
+            // succ
+            this.getJobOffers();
+          }, () => {
+            // errr
+          });
+        });
+      }, err => {
+        // error
+      });
   }
 
   public deleteJobOffer(jobOfferId: number) {
@@ -56,7 +131,7 @@ export class JobOfferListComponent implements OnInit {
       .then(() =>
         this.service.deleteJobOffer(jobOfferId).subscribe(() => {
           // succ
-          this.getValues();
+          this.getJobOffers();
         },
           err => {
             // error
@@ -88,6 +163,20 @@ export class JobOfferListComponent implements OnInit {
     );
   }
 
+  selectionChange() {
+    this.filteredJobOffers = this.jobOffers.filter(j => (j.experience === this.experience || this.experience === 'Any')
+                                          && (j.position === this.position || this.position === 'Any')
+                                          && (j.workHours === this.workHours || this.workHours === 'Any')
+                                          && (j.workType === this.workType || this.workType === 'Any')
+                                          && j.salary >= this.salary);
+
+  }
+
+  salaryChange(event: number | null) {
+    this.salary = event!;
+    this.selectionChange();
+  }
+
   public uploadFinished = (event: any) => {
     this.response = event;
   }
@@ -96,7 +185,19 @@ export class JobOfferListComponent implements OnInit {
     if (this.checked) {
       this.getJobOffersForCompany(this.companyId);
     } else {
-      this.getValues();
+      this.getJobOffers();
+    }
+  }
+
+  formatLabel(value: number) {
+    return value;
+  }
+
+  public createImgPath = (serverPath: string) => {
+    if (serverPath !== null && serverPath !== '') {
+      return `https://localhost:5001/${serverPath}`;
+    } else {
+      return 'https://loverary.files.wordpress.com/2013/10/facebook-default-no-profile-pic.jpg?w=778';
     }
   }
 }

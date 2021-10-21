@@ -1,0 +1,84 @@
+<div class="container text-center" style="margin-top: 1%;">
+  <h3 class="text-center">Create new job offer</h3><hr>
+  <div class="d-flex align-items-center justify-content-between">
+    <h4>Experience</h4>
+    <mat-form-field appearance="fill" class="bigg ml-3">
+      <mat-label>Experience</mat-label>
+      <mat-select [(ngModel)]="experience">
+        <mat-option [value]="'Any'" selected>Any</mat-option>
+        <mat-option [value]="'Intern'">Intern</mat-option>
+        <mat-option [value]="'Junior'">Junior</mat-option>
+        <mat-option [value]="'Mid'">Mid</mat-option>
+        <mat-option [value]="'Senior'">Senior</mat-option>
+      </mat-select>
+  </mat-form-field>
+  </div>
+  <!-- Position -->
+  <div class="d-flex align-items-center justify-content-between">
+    <h4>Position</h4>
+    <mat-form-field appearance="fill" class="bigg ml-3">
+      <mat-label>Position</mat-label>
+      <mat-select [(ngModel)]="position">
+        <mat-option [value]="'Any'" selected>Any</mat-option>
+        <mat-option [value]="'front-end developer'">Front-end developer</mat-option>
+        <mat-option [value]="'back-end developer'">Back-end developer</mat-option>
+        <mat-option [value]="'full-stack developer'">Full stack developer</mat-option>
+        <mat-option [value]="'quality assurance'">Quality assurance</mat-option>
+        <mat-option [value]="'project manager'">Project manager</mat-option>
+        <mat-option [value]="'business analyst'">Business Analyst</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+  <!-- Salary -->
+  <div class="d-flex align-items-center justify-content-between">
+    <h4>Salary</h4>
+    <mat-form-field class="example-full-width bigg ml-3" appearance="fill">
+      <mat-label>Salary</mat-label>
+      <input matInput placeholder="Ex. 2000" value="" [(ngModel)]="salary">
+    </mat-form-field>
+  </div>
+  <!-- Work-hours -->
+  <div class="d-flex align-items-center justify-content-between">
+    <h4>Work-hours</h4>
+    <mat-form-field appearance="fill" class="bigg ml-3">
+      <mat-label>Work-hours</mat-label>
+      <mat-select [(ngModel)]="workHours">
+        <mat-option [value]="'Any'" selected>Any</mat-option>
+        <mat-option [value]="'Part time'">Part-time</mat-option>
+        <mat-option [value]="'Full time'">Full-time</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+  <!-- Work-type -->
+  <div class="d-flex align-items-center justify-content-between">
+    <h4>Work-type</h4>
+    <mat-form-field appearance="fill" class="bigg ml-3">
+      <mat-label>Work-type</mat-label>
+      <mat-select [(ngModel)]="workType">
+        <mat-option [value]="'Any'" selected>Any</mat-option>
+        <mat-option [value]="'From office'">Work from office</mat-option>
+        <mat-option [value]="'From home'">Work from home</mat-option>
+        <mat-option [value]="'Hybrid'">Hybrid</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+  <!-- Description -->
+  <div class="d-flex align-items-center justify-content-between">
+    <h4>Description</h4>
+    <mat-form-field class="example-full-width bigg ml-3" appearance="fill">
+      <mat-label>Description</mat-label>
+      <textarea matInput placeholder="Ex. You will learn ..." rows="5" [(ngModel)]="description"></textarea>
+    </mat-form-field>
+  </div><br>
+  <div class="form-group row">
+    <div class="col-sm-6">
+      <button type="submit" class="btn btn-primary float-left" (click)="cancel()">Cancel</button>
+    </div>
+    <div *ngIf="isEdit" class="col-sm-6">
+      <button type="submit" class="btn btn-primary float-right" (click)="addOrEditJobOffer()">Save</button>
+    </div>
+    <div *ngIf="!isEdit" class="col-sm-6">
+      <button type="submit" class="btn btn-primary float-right" (click)="addOrEditJobOffer()">Create offer</button>
+    </div>
+  </div>
+</div>

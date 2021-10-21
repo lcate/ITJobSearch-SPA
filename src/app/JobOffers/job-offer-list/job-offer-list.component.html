@@ -1,46 +1,96 @@
-<div class="jumbtron">
-  <h1 class="display-4 text-center">Job offers</h1>
-</div>
-
-<div class="col-md-12">
-  <button type="button" class="btn btn-success" (click)="addJobOffer()" *ngIf="isCompanyUser">New job offer</button>
-  <hr/>
-
-  <!-- toggle all offers <-> my offers -->
-  <div *ngIf="isCompanyUser">
-    <span style="margin-right: 2%;">All job offers</span>
-    <mat-slide-toggle (change)="changed()" [(ngModel)]="checked"></mat-slide-toggle>
-    <span style="margin-left: 2%;">My job offers</span>
-  </div>
-  <!-- end toggle -->
-
-
-  <table class="table table-condensed table-bordered table-striped table-hover">
-      <thead>
-          <tr>
-          <th>id</th>
-          <th>position</th>
-          <th>Description</th>
-          <th>salary</th>
-          <th>workHours</th>
-          <th *ngIf="isCompanyUser">Options</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let jobOffer of jobOffers" class="clickable" [routerLink]="['/jobapplications/', jobOffer.id]">
-          <td>{{jobOffer.id}}</td>
-          <td>{{jobOffer.position}}</td>
-          <td>{{jobOffer.description.length > 25 ? (jobOffer.description | slice : 0:25) + '...' : jobOffer.description}}</td>
-          <td>{{jobOffer.salary}}</td>
-          <td>{{jobOffer.workHours}}</td>
-          <td class="action-button-column">
+<div class="container pading">
+  <div class="row ">
+      <div class="col-3 text-center">
+        <h3>Filter By</h3>
+        <!-- Experience  -->
+        <h4>Experience</h4>
+        <mat-form-field appearance="fill">
+          <mat-label>Experience</mat-label>
+          <mat-select [(ngModel)]="experience" (selectionChange)="selectionChange()">
+            <mat-option [value]="'Any'" selected>Any</mat-option>
+            <mat-option [value]="'Intern'">Intern</mat-option>
+            <mat-option [value]="'Junior'">Junior</mat-option>
+            <mat-option [value]="'Mid'">Mid</mat-option>
+            <mat-option [value]="'Senior'">Senior</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <!-- Position -->
+        <h4>Position</h4>
+        <mat-form-field appearance="fill">
+          <mat-label>Position</mat-label>
+          <mat-select [(ngModel)]="position" (selectionChange)="selectionChange()">
+            <mat-option [value]="'Any'" selected>Any</mat-option>
+            <mat-option [value]="'front-end developer'">Front-end developer</mat-option>
+            <mat-option [value]="'back-end developer'">Back-end developer</mat-option>
+            <mat-option [value]="'full-stack developer'">Full stack developer</mat-option>
+            <mat-option [value]="'quality assurance'">Quality assurance</mat-option>
+            <mat-option [value]="'project manager'">Project manager</mat-option>
+            <mat-option [value]="'business analyst'">Business Analyst</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <!-- Salary -->
+        <br>
+        <mat-label>Minimum Salary</mat-label><br>
+        <mat-slider class="text-center" [(ngModel)]="salary" (pointerup)="salaryChange(salary1.value)" #salary1
+          thumbLabel
+          [displayWith]="formatLabel"
+          tickInterval="1000"
+          step="100"
+          min="0"
+          max="10000"
+          aria-label="units">
+        </mat-slider>
+        <!-- Work-hours -->
+        <h4>Work-hours</h4>
+        <mat-form-field appearance="fill">
+          <mat-label>Work-hours</mat-label>
+          <mat-select [(ngModel)]="workHours" (selectionChange)="selectionChange()">
+            <mat-option [value]="'Any'" selected>Any</mat-option>
+            <mat-option [value]="'Part time'">Part-time</mat-option>
+            <mat-option [value]="'Full time'">Full-time</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <!-- Work-type -->
+        <h4>Work-type</h4>
+        <mat-form-field appearance="fill">
+          <mat-label>Work-type</mat-label>
+          <mat-select [(ngModel)]="workType" (selectionChange)="selectionChange()">
+            <mat-option [value]="'Any'" selected>Any</mat-option>
+            <mat-option [value]="'From office'">Work from office</mat-option>
+            <mat-option [value]="'From home'">Work from home</mat-option>
+            <mat-option [value]="'Hybrid'">Hybrid</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <!-- toggle all offers <-> my offers -->
+        <div *ngIf="isCompanyUser" style="margin-top: 3%;">
+          <span style="margin-right: 2%;">All job offers</span>
+          <mat-slide-toggle (change)="changed()" [(ngModel)]="checked"></mat-slide-toggle>
+          <span style="margin-left: 2%;">My job offers</span>
+        </div>
+        <!-- end toggle -->
+      </div>
+      <div class="col-1 vl"></div>
+      <div class="col-8">
+        <h3 class="text-center">Job offers</h3>
+        <button mat-stroked-button color="accent" (click)="addJobOffer()" *ngIf="isCompanyUser" style="float: right;">New offer</button><br><br>
+        <mat-card *ngFor="let jobOffer of filteredJobOffers" style="margin-bottom: 2%;" class="d-flex clickable">
+          <img class="rounded-circle shadow-1-strong me-3" [routerLink]="['/joboffer/', jobOffer.id]"
+              style="margin-right: 2%;"
+              [src]="createImgPath(jobOffer.company.user.profilePicture)"
+              alt="avatar"
+              width="65"
+              height="65"/>
+          <div style="margin: 1% 0%; flex-grow: 1;" [routerLink]="['/joboffer/', jobOffer.id]">
+            <mat-card-title>{{jobOffer.experience}} {{jobOffer.position}}</mat-card-title>
+            <mat-card-subtitle>Company: {{jobOffer.company.user.fullName}}</mat-card-subtitle>
+          </div>
+          <div>
               <a *ngIf="jobOffer.companyId == companyId" title="Edit" (click)="editJobOffer(jobOffer.id)"><i class="fas fa-edit"></i> </a>
               <a *ngIf="jobOffer.companyId == companyId" title="Delete" (click)="deleteJobOffer(jobOffer.id)" style="margin-left: 12px;"><i class="fas fa-trash-alt"></i> </a>
               <button *ngIf="!isCompanyUser" class="btn btn-primary" (click)="apply(jobOffer.id)">Apply</button>
               <app-upload (onUploadFinished)="uploadFinished($event)" *ngIf="!isCompanyUser"></app-upload>
-            </td>
-        </tr>
-      </tbody>
-
-  </table>
+          </div>
+        </mat-card>
+      </div>
+    </div>
 </div>

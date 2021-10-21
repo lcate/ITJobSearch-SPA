@@ -1,37 +1,145 @@
-<div class="container" style="margin-top: 5%;" *ngIf="user">
-  <div class="card" style="width: 100%">
-    <img class="card-img-top" src="https://thumbs.dreamstime.com/z/3d-abstract-background-black-horizontal-banner-motion-rays-light-wallpaper-speed-realistic-style-175699264.jpg" alt="Card image cap">
-    <div class="card-body">
-      <h5 class="card-title">Hi {{user.fullName}}</h5>
-      <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-    </div>
-    <ul class="list-group list-group-flush">
-      <li class="list-group-item">Cras justo odio</li>
-      <li class="list-group-item">Dapibus ac facilisis in</li>
-      <li class="list-group-item">Vestibulum at eros</li>
-    </ul>
-    <div class="card-body">
-      <a href="#" class="card-link">Card link</a>
-      <a href="#" class="card-link">Another link</a>
-    </div>
+<!-- user profile -->
+<div class="container" style="margin-top: 5%;" *ngIf="user && !isEdit">
+  <div class="row no-gutters">
+      <div class="col-auto">
+          <img [src]="createImgPath(user.profilePicture)" class="img-fluid" alt="">
+      </div>
+      <div class="col">
+          <div class="card-block px-2">
+            <form>
+              <div class="form-group row">
+                <label for="staticEmail" class="col-sm-2 col-form-label">Name</label>
+                <div class="col-sm-10">
+                  <input type="text" readonly class="form-control-plaintext" id="staticEmail" value="{{user.fullName}}">
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="staticEmail" class="col-sm-2 col-form-label">Email</label>
+                <div class="col-sm-10">
+                  <input type="text" readonly class="form-control-plaintext" id="staticEmail" value="{{user.email}}">
+                </div>
+              </div>
+            </form>
+              <button (click)="editUserProfile()" class="btn btn-primary">Edit profile</button>
+          </div>
+      </div>
   </div>
 </div>
 
-<div class="container" style="margin-top: 5%;" *ngIf="company">
-  <div class="card" style="width: 100%">
-    <img class="card-img-top" src="{{company.logo}}" alt="Card image cap">
-    <div class="card-body">
-      <h5 class="card-title">Hi {{company.name}}!</h5>
-      <p class="card-text">{{company.aboutUs}}</p>
+<div *ngIf="isEdit && user" class="container" style="margin-top: 1%;">
+  <h3 class="text-center">Edit profile info</h3>
+  <form [formGroup]="formGroup"  style="margin-top: 3%;">
+    <div class="form-group row">
+      <label for="inputEmail3" class="col-sm-2 col-form-label text-right">Full name</label>
+      <div class="col-sm-10">
+        <input type="text" class="form-control" placeholder="Company name" formControlName="name">
+      </div>
     </div>
-    <ul class="list-group list-group-flush">
-      <li class="list-group-item">Cras justo odio</li>
-      <li class="list-group-item">Dapibus ac facilisis in</li>
-      <li class="list-group-item">Vestibulum at eros</li>
-    </ul>
-    <div class="card-body">
+    <div class="form-group row">
+      <label for="inputEmail3" class="col-sm-2 col-form-label text-right">Email</label>
+      <div class="col-sm-10">
+        <input type="text" class="form-control" placeholder="Web URL" formControlName="email">
+      </div>
+    </div>
+    <div class="form-group row">
+      <label for="inputPassword3" class="col-sm-2 col-form-label text-right">Profile Picture</label>
+      <div class="col-sm-10">
+        <app-upload (onUploadFinished)="uploadFinished($event)"></app-upload>
+      </div>
+    </div>
+    <div class="form-group row">
+      <div class="col-sm-12">
+        <button type="submit" class="btn btn-primary float-right" (click)="updateUserProfile()">Save</button>
+      </div>
+    </div>
+  </form>
+</div>
+
+<!-- company profile -->
+<div class="card container" style="margin-top: 5%;" *ngIf="company && !isEdit">
+  <div class="row no-gutters">
+      <div class="col-auto">
+          <img [src]="createImgPath(company.user.profilePicture)" class="img-fluid" alt="">
+      </div>
+      <div class="col">
+          <div class="card-block px-2">
+            <form>
+              <div class="form-group row">
+                <label for="staticEmail" class="col-sm-2 col-form-label">Company Name</label>
+                <div class="col-sm-10">
+                  <input type="text" readonly class="form-control-plaintext" id="staticEmail" value="{{company.name}}">
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="staticEmail" class="col-sm-2 col-form-label">Email</label>
+                <div class="col-sm-10">
+                  <input type="text" readonly class="form-control-plaintext" id="staticEmail" value="{{company.user.email}}">
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="staticEmail" class="col-sm-2 col-form-label">About us</label>
+                <div class="col-sm-10">
+                  <input type="text" readonly class="form-control-plaintext" id="staticEmail" value="{{company.aboutUs}}">
+                </div>
+              </div>
+
+            </form>
+              <button (click)="editCompanyProfile()" class="btn btn-primary">Edit profile</button>
+          </div>
+      </div>
+  </div>
+  <div class="card-footer w-100 text-muted">
+    <div class="form-group row d-flex justify-content-between" >
       <a href="{{company.webURL}}" target="_blank" class="card-link">Our website</a>
       <a href="{{company.linkedin}}" class="card-link" target="_blank">Linkedin profile</a>
     </div>
   </div>
+</div>
+<!-- edit company -->
+<div *ngIf="isEdit && company" class="container" style="margin-top: 1%;">
+  <h3 class="text-center">Edit profile info</h3>
+  <form [formGroup]="formGroup"  style="margin-top: 3%;">
+    <div class="form-group row">
+      <label for="inputEmail3" class="col-sm-2 col-form-label text-right">Company name</label>
+      <div class="col-sm-10">
+        <input type="text" class="form-control" placeholder="Company name" formControlName="companyName">
+      </div>
+    </div>
+    <div class="form-group row">
+      <label for="inputEmail3" class="col-sm-2 col-form-label text-right">Web URL</label>
+      <div class="col-sm-10">
+        <input type="text" class="form-control" placeholder="Web URL" formControlName="webURL">
+      </div>
+    </div>
+    <div class="form-group row">
+      <label for="inputEmail3" class="col-sm-2 col-form-label text-right">Email</label>
+      <div class="col-sm-10">
+        <input type="text" class="form-control" placeholder="Email" formControlName="email">
+      </div>
+    </div>
+    <div class="form-group row">
+      <label for="inputEmail3" class="col-sm-2 col-form-label text-right">Linkedin</label>
+      <div class="col-sm-10">
+        <input type="text" class="form-control" placeholder="Linkedin" formControlName="linkedin">
+      </div>
+    </div>
+    <div class="form-group row">
+      <label for="inputPassword3" class="col-sm-2 col-form-label text-right">About us</label>
+      <div class="col-sm-10">
+        <input type="text" class="form-control" placeholder="About us" formControlName="aboutUs">
+      </div>
+    </div>
+    <div class="form-group row">
+      <label for="inputPassword3" class="col-sm-2 col-form-label text-right">Profile Picture</label>
+      <div class="col-sm-10">
+        <app-upload (onUploadFinished)="uploadFinished($event)"></app-upload>
+      </div>
+    </div>
+    <br>
+    <div class="form-group row">
+      <div class="col-sm-12">
+        <button type="submit" class="btn btn-primary float-right" (click)="updateCompanyProfile()">Save</button>
+      </div>
+    </div>
+  </form>
 </div>

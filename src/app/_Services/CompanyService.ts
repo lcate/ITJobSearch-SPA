@@ -18,7 +18,7 @@ export class CompanyService {
     }
 
     // tslint:disable-next-line: typedef
-    public updateCompany(id: number, company: Company) {
+    public updateCompany(id: number, company: any) {
         return this.http.put(this.baseUrl + 'companies/' + id, company);
     }
 

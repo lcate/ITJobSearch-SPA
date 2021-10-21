@@ -27,11 +27,7 @@ export class LoginComponent implements OnInit {
     this.userService.login(email, password).subscribe((data: any) => {
       if (data.responseCode === 1) {
         localStorage.setItem(Constants.USER_KEY, JSON.stringify(data.dataSet));
-        if (data.dataSet.role === 'Company') {
-          this.router.navigate(['/companies']);
-        } else {
-          this.router.navigate(['/joboffers']);
-        }
+        this.router.navigate(['/joboffers']);
       }
     },
     (error) => {
