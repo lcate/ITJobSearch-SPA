@@ -1,6 +1,9 @@
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, Validators } from '@angular/forms';
+import { Component, Input, OnInit } from '@angular/core';
+import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
+import { JobApplication } from '../_Models/JobApplication';
+import { User } from '../_Models/User';
+import { Comment } from '../_Models/Comment';
 import { AllFunctions } from '../_Services/allFunctions';
 import { CommentService } from '../_Services/CommentService';
 import { JobApplicationService } from '../_Services/JobApplicationService';
@@ -11,14 +14,18 @@ import { JobApplicationService } from '../_Services/JobApplicationService';
   styleUrls: ['./comment.component.css']
 })
 export class CommentsComponent implements OnInit {
-  user!: any;
+  @Input() applicationId = 0;
+
+  user: User = new User();
+  jobApplication: JobApplication = new JobApplication();
+  comments: Comment[] = [];
+
   jobApplicationId!: number;
-  jobApplication: any = [];
-  comments!: any;
   response!: {dbPath: ''};
   message!: string;
   userEmail!: string;
   isCompanyUser!: boolean;
+
   public commentForm = this.formBuilder.group({
     commentMessage: ['', [Validators.required]]
   });
@@ -28,9 +35,13 @@ export class CommentsComponent implements OnInit {
                    { }
 
   ngOnInit(): void {
-    this.route.params.subscribe(params => {
-      this.jobApplicationId = params.id;
-    });
+    if (this.applicationId){
+      this.jobApplicationId = this.applicationId;
+    } else {
+      this.route.params.subscribe(params => {
+        this.jobApplicationId = params.id;
+      });
+    }
     this.user = this.allFunction.user;
     this.isCompanyUser = this.allFunction.isCompany;
     this.userEmail = this.allFunction.user.email;
@@ -40,7 +51,7 @@ export class CommentsComponent implements OnInit {
 
   getJobApplicationById() {
     this.jobApplicationsService.getJobApplicationById(this.jobApplicationId)
-      .subscribe((jobApplication) => {
+      .subscribe((jobApplication: any) => {
         this.jobApplication = jobApplication;
       },
       err => {
@@ -50,7 +61,7 @@ export class CommentsComponent implements OnInit {
 
   getCommentsByJobApplicationId() {
     this.commentService.getCommentsByJobApplicationId(this.jobApplicationId)
-      .subscribe((comments) => {
+      .subscribe((comments: any) => {
         this.comments = comments;
       },
       err => {

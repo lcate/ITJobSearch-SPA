@@ -4,13 +4,12 @@ export class User {
   public email = '';
   public userName = '';
   public profilePicture = '';
+  public linkedin = '';
+  public aboutMe = '';
+  public dateOfBirth!: Date | null;
+  public city = '';
+  public address = '';
   public role = '';
+  public phoneNumber = '';
 
-  constructor(fullName: string, email: string, userName: string, role: string, profilePicture: string) {
-    this.fullName = fullName;
-    this.email = email;
-    this.userName = userName;
-    this.role = role;
-    this.profilePicture = profilePicture;
-  }
 }

@@ -1,0 +1,13 @@
+:host::ng-deep .mat-card-subtitle{
+  margin-bottom: 0px !important;
+}
+
+.badge {
+  padding: 10px;
+  font-size: 12px;
+  width: 65px;
+}
+
+.clickable {
+  cursor: pointer !important;
+}

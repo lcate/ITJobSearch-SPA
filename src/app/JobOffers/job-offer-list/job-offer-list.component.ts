@@ -1,8 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
 import { JobOffersService } from 'src/app/_Services/JobOfferService';
 import { ConfirmationDialogService } from 'src/app/_Services/confirmation-dialog.service';
-import { Subject } from 'rxjs';
 import { AllFunctions } from 'src/app/_Services/allFunctions';
 import { JobApplicationService } from 'src/app/_Services/JobApplicationService';
 import { JobOffer } from 'src/app/_Models/JobOffer';
@@ -21,13 +19,13 @@ export class JobOfferListComponent implements OnInit {
   pageSize = 5;
   pageSizeOptions: number[] = [5, 10, 25, 100];
   pageIndex = 0;
-
   // MatPaginator Output
   pageEvent!: PageEvent;
 
   public jobOffers: JobOffer[] = [];
   public filteredJobOffers: JobOffer[] = [];
   public jobOffer: JobOffer = new JobOffer();
+
   experience = 'Any';
   position = 'Any';
   workHours = 'Any';
@@ -37,17 +35,12 @@ export class JobOfferListComponent implements OnInit {
   public isCompanyUser!: boolean;
   public companyId!: number;
   public userEmail!: string;
-  public isApplied!: boolean;
   public response!: {dbPath: ''};
-  checked = false;
 
-  constructor(private router: Router,
-              private service: JobOffersService,
+  constructor(private service: JobOffersService,
               private allFunction: AllFunctions,
-              private jobApplicationService: JobApplicationService,
               private confirmationDialogService: ConfirmationDialogService,
-              private dialog: MatDialog) {
-               }
+              private dialog: MatDialog) {}
 
   ngOnInit() {
     this.getJobOffers();
@@ -95,7 +88,7 @@ export class JobOfferListComponent implements OnInit {
           // errr
         });
       });
-    }
+  }
 
   public editJobOffer(jobOfferId: number) {
     this.service.getJobOfferById(jobOfferId).subscribe(jobOffer => {
@@ -147,30 +140,6 @@ export class JobOfferListComponent implements OnInit {
       .catch(() => '');
   }
 
-  public apply(jobOfferId: number){
-    this.jobApplicationService.addJobApplication(this.userEmail, jobOfferId, this.response.dbPath)
-      .subscribe( x => {
-        if (x) {
-          this.isApplied = true;
-        }
-      },
-      error => {
-        this.isApplied = false;
-      });
-  }
-
-
-  public getJobOffersForCompany(companyId: number) {
-    this.service.getJobOffersForCompany(companyId).subscribe(
-      (jobOffers: any) => {
-        this.jobOffers = jobOffers;
-      },
-      (error) => {
-        console.log(error);
-      }
-    );
-  }
-
   selectionChange() {
     this.filteredJobOffers = this.jobOffers.filter(j => (j.experience === this.experience || this.experience === 'Any')
                                           && (j.position === this.position || this.position === 'Any')
@@ -178,28 +147,16 @@ export class JobOfferListComponent implements OnInit {
                                           && (j.workType === this.workType || this.workType === 'Any')
                                           && j.salary >= this.salary);
     this.length = this.filteredJobOffers.length;
-    this.filteredJobOffers = this.filteredJobOffers.slice(this.pageSize * this.pageIndex, this.pageSize * (this.pageIndex + 1));
+    if (this.length > this.pageSize * this.pageIndex) {
+      this.filteredJobOffers = this.filteredJobOffers.slice(this.pageSize * this.pageIndex, this.pageSize * (this.pageIndex + 1));
+    } else {
+      this.pageIndex = 0;
+    }
   }
 
   salaryChange(event: number | null) {
     this.salary = event!;
     this.selectionChange();
-  }
-
-  public uploadFinished = (event: any) => {
-    this.response = event;
-  }
-
-  changed(){
-    if (this.checked) {
-      this.getJobOffersForCompany(this.companyId);
-    } else {
-      this.getJobOffers();
-    }
-  }
-
-  formatLabel(value: number) {
-    return value;
   }
 
   public createImgPath = (serverPath: string) => {

@@ -1,145 +1,169 @@
-<!-- user profile -->
-<div class="container" style="margin-top: 5%;" *ngIf="user && !isEdit">
-  <div class="row no-gutters">
-      <div class="col-auto">
-          <img [src]="createImgPath(user.profilePicture)" class="img-fluid" alt="">
-      </div>
-      <div class="col">
-          <div class="card-block px-2">
-            <form>
-              <div class="form-group row">
-                <label for="staticEmail" class="col-sm-2 col-form-label">Name</label>
-                <div class="col-sm-10">
-                  <input type="text" readonly class="form-control-plaintext" id="staticEmail" value="{{user.fullName}}">
-                </div>
-              </div>
-              <div class="form-group row">
-                <label for="staticEmail" class="col-sm-2 col-form-label">Email</label>
-                <div class="col-sm-10">
-                  <input type="text" readonly class="form-control-plaintext" id="staticEmail" value="{{user.email}}">
-                </div>
-              </div>
-            </form>
-              <button (click)="editUserProfile()" class="btn btn-primary">Edit profile</button>
-          </div>
-      </div>
-  </div>
-</div>
-
-<div *ngIf="isEdit && user" class="container" style="margin-top: 1%;">
-  <h3 class="text-center">Edit profile info</h3>
-  <form [formGroup]="formGroup"  style="margin-top: 3%;">
-    <div class="form-group row">
-      <label for="inputEmail3" class="col-sm-2 col-form-label text-right">Full name</label>
-      <div class="col-sm-10">
-        <input type="text" class="form-control" placeholder="Company name" formControlName="name">
-      </div>
-    </div>
-    <div class="form-group row">
-      <label for="inputEmail3" class="col-sm-2 col-form-label text-right">Email</label>
-      <div class="col-sm-10">
-        <input type="text" class="form-control" placeholder="Web URL" formControlName="email">
-      </div>
-    </div>
-    <div class="form-group row">
-      <label for="inputPassword3" class="col-sm-2 col-form-label text-right">Profile Picture</label>
-      <div class="col-sm-10">
-        <app-upload (onUploadFinished)="uploadFinished($event)"></app-upload>
-      </div>
-    </div>
-    <div class="form-group row">
-      <div class="col-sm-12">
-        <button type="submit" class="btn btn-primary float-right" (click)="updateUserProfile()">Save</button>
-      </div>
-    </div>
-  </form>
-</div>
-
 <!-- company profile -->
-<div class="card container" style="margin-top: 5%;" *ngIf="company && !isEdit">
-  <div class="row no-gutters">
-      <div class="col-auto">
-          <img [src]="createImgPath(company.user.profilePicture)" class="img-fluid" alt="">
-      </div>
-      <div class="col">
-          <div class="card-block px-2">
-            <form>
-              <div class="form-group row">
-                <label for="staticEmail" class="col-sm-2 col-form-label">Company Name</label>
-                <div class="col-sm-10">
-                  <input type="text" readonly class="form-control-plaintext" id="staticEmail" value="{{company.name}}">
-                </div>
-              </div>
-              <div class="form-group row">
-                <label for="staticEmail" class="col-sm-2 col-form-label">Email</label>
-                <div class="col-sm-10">
-                  <input type="text" readonly class="form-control-plaintext" id="staticEmail" value="{{company.user.email}}">
-                </div>
-              </div>
-              <div class="form-group row">
-                <label for="staticEmail" class="col-sm-2 col-form-label">About us</label>
-                <div class="col-sm-10">
-                  <input type="text" readonly class="form-control-plaintext" id="staticEmail" value="{{company.aboutUs}}">
-                </div>
-              </div>
-
-            </form>
-              <button (click)="editCompanyProfile()" class="btn btn-primary">Edit profile</button>
-          </div>
-      </div>
-  </div>
-  <div class="card-footer w-100 text-muted">
-    <div class="form-group row d-flex justify-content-between" >
-      <a href="{{company.webURL}}" target="_blank" class="card-link">Our website</a>
-      <a href="{{company.linkedin}}" class="card-link" target="_blank">Linkedin profile</a>
+<div class="container" *ngIf="company">
+  <div class="row">
+    <div class="col-3">
+      <mat-card class="box text-center" style="margin-top: 33%;">
+        <mat-card-header>
+          <img [src]="createImgPath(company.user.profilePicture)" class="rounded-circle shadow-1-strong me-3"
+          style="margin-right: 2%;"
+          alt="avatar"
+          width="150"
+          height="150">
+        </mat-card-header>
+        <mat-card-title class="mt-3">{{company.name}}</mat-card-title>
+        <hr>
+        <mat-card-subtitle>Email: {{company.user.email}}</mat-card-subtitle>
+        <mat-card-content>
+          <a href="{{company.webURL}}" target="_blank" class="card-link">Our website</a>
+        </mat-card-content>
+        <mat-card-content><a href="{{company.user.linkedin}}" class="card-link" target="_blank">Linkedin profile</a></mat-card-content>
+      </mat-card>
+    </div>
+    <div class="col-9">
+      <mat-card class="box" style="margin-top: 10%;">
+        <mat-card-title>
+          About us:
+        </mat-card-title>
+        <hr>
+        <mat-card-content class="mb-5">
+          {{company.user.aboutMe}}
+        </mat-card-content>
+        <mat-card-title>
+          Employees:
+        </mat-card-title>
+        <hr>
+        <mat-card-content class="mb-5">
+          From {{company.employeesFrom}} to {{company.employeesTo}}
+        </mat-card-content>
+        <mat-card-title>
+          Year founded:
+        </mat-card-title>
+        <hr>
+        <mat-card-content class="mb-5">
+          2008
+        </mat-card-content>
+        <mat-card-title>
+          Locations:
+        </mat-card-title>
+        <hr>
+        <mat-card-content>
+          {{company.locations}}
+        </mat-card-content>
+      </mat-card>
+      <mat-card class="box mt-3">
+        <mat-card-title>
+          Contact us:
+        </mat-card-title>
+        <hr>
+        <mat-card-content class="mt-3">
+          Street:
+        </mat-card-content>
+        <mat-card-subtitle>
+          {{company.user.address}}
+        </mat-card-subtitle>
+        <mat-card-content class="mt-3">
+          City:
+        </mat-card-content>
+        <mat-card-subtitle>
+          {{company.user.city}}
+        </mat-card-subtitle>
+        <mat-card-content>
+          Number:
+        </mat-card-content>
+        <mat-card-subtitle>
+          {{company.user.phoneNumber}}
+        </mat-card-subtitle>
+        <mat-card-content>
+          Web URL:
+        </mat-card-content>
+        <mat-card-subtitle>
+          <a href="{{company.webURL}}" target="_blank" class="card-link">{{company.webURL}}</a>
+        </mat-card-subtitle>
+      </mat-card>
+      <button mat-stroked-button color="accent" (click)="editCompanyProfile()" class="float-right mt-4 mb-4">Edit profile</button>
     </div>
   </div>
 </div>
-<!-- edit company -->
-<div *ngIf="isEdit && company" class="container" style="margin-top: 1%;">
-  <h3 class="text-center">Edit profile info</h3>
-  <form [formGroup]="formGroup"  style="margin-top: 3%;">
-    <div class="form-group row">
-      <label for="inputEmail3" class="col-sm-2 col-form-label text-right">Company name</label>
-      <div class="col-sm-10">
-        <input type="text" class="form-control" placeholder="Company name" formControlName="companyName">
-      </div>
+
+<!-- user profile -->
+<div class="container" *ngIf="user">
+  <div class="row">
+    <div class="col-3">
+      <mat-card class="box text-center" style="margin-top: 33%;">
+        <mat-card-header>
+          <img [src]="createImgPath(user.profilePicture)" class="rounded-circle shadow-1-strong me-3"
+          style="margin-right: 2%;"
+          alt="avatar"
+          width="150"
+          height="150">
+        </mat-card-header>
+        <mat-card-title class="mt-3">{{user.fullName}}</mat-card-title>
+        <hr>
+        <mat-card-subtitle class="mt-3">Email: {{user.email}}</mat-card-subtitle>
+        <mat-card-subtitle>City: {{user.city}}</mat-card-subtitle>
+        <mat-card-subtitle>Date of birth: {{user.dateOfBirth | date:'dd MMM yyyy'}}</mat-card-subtitle>
+        <mat-card-content><a href="{{user.linkedin}}" class="card-link" target="_blank">Linkedin profile</a></mat-card-content>
+      </mat-card>
     </div>
-    <div class="form-group row">
-      <label for="inputEmail3" class="col-sm-2 col-form-label text-right">Web URL</label>
-      <div class="col-sm-10">
-        <input type="text" class="form-control" placeholder="Web URL" formControlName="webURL">
-      </div>
+    <div class="col-9">
+      <mat-card class="box" style="margin-top: 10%;">
+        <mat-card-title>
+          About me:
+        </mat-card-title>
+        <hr>
+        <mat-card-content class="mb-5">
+          {{user.aboutMe}}
+        </mat-card-content>
+
+        <mat-card-title>
+          Education:
+        </mat-card-title>
+        <hr>
+        <mat-card-content class="mb-5">
+          From 90 to 100
+        </mat-card-content>
+
+        <mat-card-title>
+          Home Address:
+        </mat-card-title>
+        <hr>
+        <mat-card-content class="mb-5">
+          {{user.address}}
+        </mat-card-content>
+
+        <mat-card-title>
+          Phone number:
+        </mat-card-title>
+        <hr>
+        <mat-card-content>
+          {{user.phoneNumber}}
+        </mat-card-content>
+      </mat-card>
+      <mat-card class="box mt-3">
+        <mat-card-title>
+          Experience:
+        </mat-card-title>
+        <hr>
+        <ul>
+          <li>sadsad sad sad sadsad sad sa dsa</li>
+          <li>sadsad sad sad sadsad sad sa dsa</li>
+          <li>sadsad sad sad sadsad sad sa dsa</li>
+          <li>sadsad sad sad sadsad sad sa dsa</li>
+        </ul>
+      </mat-card>
+      <mat-card class="box mt-3">
+        <mat-card-title>
+          Projects:
+        </mat-card-title>
+        <hr>
+        <ul>
+          <li>sadsad sad sad sadsad sad sa dsa</li>
+          <li>sadsad sad sad sadsad sad sa dsa</li>
+          <li>sadsad sad sad sadsad sad sa dsa</li>
+          <li>sadsad sad sad sadsad sad sa dsa</li>
+        </ul>
+      </mat-card>
+      <button mat-stroked-button color="accent" (click)="editUserProfile()" class="float-right mt-4">Edit profile</button>
     </div>
-    <div class="form-group row">
-      <label for="inputEmail3" class="col-sm-2 col-form-label text-right">Email</label>
-      <div class="col-sm-10">
-        <input type="text" class="form-control" placeholder="Email" formControlName="email">
-      </div>
-    </div>
-    <div class="form-group row">
-      <label for="inputEmail3" class="col-sm-2 col-form-label text-right">Linkedin</label>
-      <div class="col-sm-10">
-        <input type="text" class="form-control" placeholder="Linkedin" formControlName="linkedin">
-      </div>
-    </div>
-    <div class="form-group row">
-      <label for="inputPassword3" class="col-sm-2 col-form-label text-right">About us</label>
-      <div class="col-sm-10">
-        <input type="text" class="form-control" placeholder="About us" formControlName="aboutUs">
-      </div>
-    </div>
-    <div class="form-group row">
-      <label for="inputPassword3" class="col-sm-2 col-form-label text-right">Profile Picture</label>
-      <div class="col-sm-10">
-        <app-upload (onUploadFinished)="uploadFinished($event)"></app-upload>
-      </div>
-    </div>
-    <br>
-    <div class="form-group row">
-      <div class="col-sm-12">
-        <button type="submit" class="btn btn-primary float-right" (click)="updateCompanyProfile()">Save</button>
-      </div>
-    </div>
-  </form>
+  </div>
 </div>

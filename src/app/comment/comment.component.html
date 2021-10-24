@@ -1,49 +1,54 @@
 <div class="container" style="margin-top:5%">
 
   <!-- job application details -->
-  <table class="table table-condensed table-bordered table-striped table-hover">
-    <thead>
-      <tr>
-        <th>id</th>
-        <th>joboffer id</th>
-        <th>User name</th>
-        <th>CV</th>
-        <th>Status</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr class="clickable" [routerLink]="['/jobapplications/details/', jobApplication.id]">
-        <td>{{jobApplication.id}}</td>
-        <td>{{jobApplication.jobOfferId}}</td>
-        <td>{{jobApplication.user.fullName}}</td>
-        <td>
-            <app-download [fileUrl]="jobApplication.imgPath"></app-download>
-        </td>
-        <td>
-          <!-- if user -->
-          <div *ngIf="!isCompanyUser">
-            <span *ngIf="jobApplication.status == 0" class="badge badge-pill badge-warning badges-big">Pending</span>
-            <span *ngIf="jobApplication.status == 1" class="badge badge-pill badge-success badges-big">Hired</span>
-            <span *ngIf="jobApplication.status == 2" class="badge badge-pill badge-danger badges-big">Declined</span>
-          </div>
-          <!-- if company -->
-          <div *ngIf="isCompanyUser">
-            <span *ngIf="jobApplication.status == 1" class="badge badge-pill badge-success badges-big" [ngbTooltip]="'Hired'">Hired</span>
-            <span *ngIf="jobApplication.status == 2" class="badge badge-pill badge-danger badges-big" [ngbTooltip]="'Declined'">Declined</span>
-          </div>
-          <div *ngIf="isCompanyUser && jobApplication.status == 0">
-            <button (click)="hiredClick()" style="margin-bottom: 20%;" class="badge badge-pill badge-success badges-big">Hired</button><br>
-            <button (click)="declinedClick()" class="badge badge-pill badge-danger badges-big">Declined</button>
-          </div>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+  <mat-card class="mb-4 clickable">
+    <div class="d-flex">
+      <img class="rounded-circle shadow-1-strong me-3"
+              style="margin-right: 2%;"
+              [src]="createImgPath(jobApplication.jobOffer.company.user.profilePicture)"
+              alt="avatar"
+              width="65"
+              height="65"/>
+      <div style="flex-grow: 1;" class="pt-2">
+        <mat-card-title>{{jobApplication.jobOffer.position}}</mat-card-title>
+        <mat-card-subtitle><b>Company:</b> {{jobApplication.jobOffer.company.name}}</mat-card-subtitle>
+      </div>
+      <div>
+        <div *ngIf="!isCompanyUser">
+          <span *ngIf="jobApplication.status == 0" class="badge badge-pill badge-warning">Pending</span>
+          <span *ngIf="jobApplication.status == 1" class="badge badge-pill badge-success">Hired</span>
+          <span *ngIf="jobApplication.status == 2" class="badge badge-pill badge-danger">Declined</span>
+        </div>
+        <!-- if company -->
+        <div *ngIf="isCompanyUser">
+          <span *ngIf="jobApplication.status == 1" class="badge badge-pill badge-success" [ngbTooltip]="'Hired'">Hired</span>
+          <span *ngIf="jobApplication.status == 2" class="badge badge-pill badge-danger" [ngbTooltip]="'Declined'">Declined</span>
+        </div>
+        <div *ngIf="isCompanyUser && jobApplication.status == 0">
+          <button (click)="hiredClick()" style="margin-bottom: 20%;" class="badge badge-pill badge-success">Hired</button><br>
+          <button (click)="declinedClick()" class="badge badge-pill badge-danger">Declined</button>
+        </div>
+      </div>
+    </div>
+    <hr>
+    <div class="row">
+      <div class="col-6">
+        <mat-card-content><b>Experience:</b> {{jobApplication.jobOffer.experience}}</mat-card-content>
+        <mat-card-content><b>Work-type: </b>{{jobApplication.jobOffer.workType}}</mat-card-content>
+      </div>
+      <div class="col-6">
+        <mat-card-content><b>Work-hours: </b>{{jobApplication.jobOffer.workHours}}</mat-card-content>
+        <mat-card-content><b>Salary: </b>{{jobApplication.jobOffer.salary}}</mat-card-content>
+      </div>
+    </div>
+    <mat-card-content><b>About this job offer:</b> {{jobApplication.jobOffer.description}}</mat-card-content>
+    <app-download [fileUrl]="jobApplication.imgPath"></app-download>
+  </mat-card>
 
   <section *ngFor="let comment of comments">
     <div class="container text-dark">
       <div class="row d-flex justify-content-center">
-        <div class="col-md-12 col-lg-12 col-xl-12">
+        <div class="w-100">
           <div class="card">
             <div class="card-body p-4">
               <div class="d-flex flex-start w-100"  [ngClass]="{'flex-row-reverse': userEmail == comment.user.email}">
@@ -61,9 +66,9 @@
                       <p> {{comment.message}} </p>
                     </div>
                   </div>
-                  <div *ngIf="comment.file">
+                  <div>
                     <p> {{comment.dateCreated | date:'dd MMM yyyy hh:mm a'}} </p>
-                    <app-download [fileUrl]="comment.file"></app-download>
+                    <app-download  *ngIf="comment.file" [fileUrl]="comment.file"></app-download>
                   </div>
                 </div>
               </div>
@@ -78,7 +83,7 @@
   <section>
     <div class="container text-dark">
       <div class="row d-flex justify-content-center">
-        <div class="col-md-12 col-lg-12 col-xl-12">
+        <div class="w-100">
           <div class="card">
             <div class="card-body p-4">
               <div class="d-flex flex-start w-100">

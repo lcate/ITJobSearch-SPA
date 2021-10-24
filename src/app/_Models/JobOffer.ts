@@ -1,3 +1,5 @@
+import { Company } from "./Company";
+
 export class JobOffer {
   id!: number;
   position!: string;
@@ -7,5 +9,6 @@ export class JobOffer {
   salary!: any;
   workHours!: string;
   companyId!: number;
-  company!: any;
+  company!: Company;
 }
+

@@ -2,9 +2,8 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { CompanyListComponent } from './Companies/company-list/company-list.component';
 import { CompanyComponent } from './Companies/company/company.component';
-import { CompanyIdGuard } from './guards/companyId-guard.service';
-import { JobOfferExistsGuard } from './guards/JobOfferExists-guard.service';
 import { RoleGuard } from './guards/role-guard.service';
+import { UserGuard } from './guards/user-guard.service';
 import { HomeComponent } from './home/home.component';
 import { CommentsComponent } from './comment/comment.component';
 import { JobApplicationForOfferComponent } from './job-application-for-offer/job-application-for-offer.component';
@@ -22,7 +21,7 @@ const routes: Routes = [
   { path: 'company/:id', component: CompanyComponent },
   { path: 'joboffers', component: JobOfferListComponent },
   { path: 'joboffer/:id', component: JobApplicationForOfferComponent },
-  { path: 'jobapplications', component: JobApplicationComponent },
+  { path: 'jobapplications', component: JobApplicationComponent, canActivate: [UserGuard] },
   { path: 'jobapplications/details/:id', component: CommentsComponent },
   { path: 'register', component: RegisterComponent },
   { path: 'login', component: LoginComponent },

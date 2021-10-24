@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { EditProfileDialogComponent } from 'src/app/edit-profile-dialog/edit-profile-dialog.component';
 import { Constants } from 'src/app/Helpers/constants';
 import { Company } from 'src/app/_Models/Company';
 import { User } from 'src/app/_Models/User';
@@ -16,31 +17,17 @@ export class ProfileComponent implements OnInit {
   companyID!: number;
   company!: Company;
   user!: User;
-  public formGroup!: FormGroup;
-  isEdit = false;
   response!: {dbPath: ''};
   userAllFunction: any;
 
-  constructor(private allFunction: AllFunctions, private companyService: CompanyService, private userService: UserService) {
-
-   }
+  constructor(private allFunction: AllFunctions, private companyService: CompanyService, private userService: UserService,
+              private dialog: MatDialog) {}
 
   ngOnInit(): void {
     if (this.allFunction.isCompany) {
       this.companyID = this.allFunction.companyID;
-      this.formGroup = new FormGroup({
-        companyName: new FormControl('', Validators.required),
-        webURL: new FormControl('',  Validators.required),
-        email: new FormControl({value: '', disabled: true}, Validators.required),
-        linkedin: new FormControl('', Validators.required),
-        aboutUs: new FormControl('',  Validators.required),
-      });
       this.getCompanyInfo(this.allFunction.companyID);
     } else {
-      this.formGroup = new FormGroup({
-        name: new FormControl('', Validators.required),
-        email: new FormControl({value: '', disabled: true}, Validators.required)
-      });
       this.userAllFunction = this.allFunction.user;
       this.getUserInfo(this.userAllFunction.email);
     }
@@ -49,7 +36,6 @@ export class ProfileComponent implements OnInit {
   getUserInfo(email: string) {
     this.userService.getUserByEmail(email).subscribe(user => {
       this.user = user;
-      this.isEdit = false;
     });
   }
 
@@ -57,57 +43,87 @@ export class ProfileComponent implements OnInit {
     this.companyService.getCompanyById(companyId)
       .subscribe(company => {
         this.company = company;
-        this.isEdit = false;
     });
   }
 
-  updateCompanyProfile() {
-    const companyData = {
-      Id: this.companyID,
-      Name: this.formGroup.controls.companyName.value,
-      URL: this.formGroup.controls.webURL.value,
-      Linkedin: this.formGroup.controls.linkedin.value,
-      AboutUs: this.formGroup.controls.aboutUs.value,
-      ProfilePicture: this.response.dbPath
-    };
-    this.companyService.updateCompany(this.company.id, companyData)
-      .subscribe((companyData: any) => {
-        localStorage.setItem(Constants.USER_KEY, JSON.stringify(companyData));
-        this.getCompanyInfo(this.company.id);
-      },
-      err => {
+  public editCompanyProfile() {
+    const dialogConfig = new MatDialogConfig();
 
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+
+    dialogConfig.data = {
+      isCompany: true,
+      user: null,
+      company: this.company
+    };
+
+    const dialogRef = this.dialog.open(EditProfileDialogComponent, dialogConfig);
+
+    dialogRef.afterClosed()
+      .subscribe((data: Company) => {
+        const companyData = {
+          Id: this.companyID,
+          Name: data.user.fullName,
+          URL: data.webURL,
+          Linkedin: data.user.linkedin,
+          AboutUs: data.user.aboutMe,
+          ProfilePicture: data.user.profilePicture,
+          Address: data.user.address,
+          City: data.user.city,
+          UserName: data.user.fullName,
+          PhoneNumber: data.user.phoneNumber,
+          EmployeesFrom: data.employeesFrom,
+          EmployeesTo: data.employeesTo,
+          YearFounded: data.yearFounded,
+          Locations: data.locations
+        };
+
+        this.companyService.updateCompany(this.company.id, companyData)
+          .subscribe((companyData: any) => {
+            localStorage.setItem(Constants.USER_KEY, JSON.stringify(companyData));
+            this.getCompanyInfo(this.company.id);
+          },
+          err => {
+
+          });
       });
   }
 
-  public editCompanyProfile() {
-    this.isEdit = true;
-    this.formGroup.controls.companyName.setValue(this.company.name);
-    this.formGroup.controls.webURL.setValue(this.company.webURL);
-    this.formGroup.controls.email.setValue(this.company.user.email);
-    this.formGroup.controls.linkedin.setValue(this.company.linkedin);
-    this.formGroup.controls.aboutUs.setValue(this.company.aboutUs);
-  }
-
   public editUserProfile() {
-    this.isEdit = true;
-    this.formGroup.controls.name.setValue(this.user.fullName);
-    this.formGroup.controls.email.setValue(this.user.email);
-  }
+    const dialogConfig = new MatDialogConfig();
 
-  public updateUserProfile() {
-    const userData = {
-      Email: this.user.email,
-      Name: this.formGroup.controls.name.value,
-      ProfilePicture: this.response.dbPath
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+
+    dialogConfig.data = {
+      isCompany: false,
+      company: null,
+      user: this.user
     };
-    this.userService.updateUserProfile(this.userAllFunction.email, userData)
-      .subscribe((userData) => {
-        localStorage.setItem(Constants.USER_KEY, JSON.stringify(userData));
-        this.getUserInfo(this.userAllFunction.email);
-      },
-      err => {
 
+    const dialogRef = this.dialog.open(EditProfileDialogComponent, dialogConfig);
+
+    dialogRef.afterClosed()
+      .subscribe((data) => {
+        this.user.aboutMe = data.aboutMe;
+        this.user.address = data.address;
+        this.user.city = data.city;
+        this.user.dateOfBirth = data.dateOfBirth;
+        this.user.userName = data.userName;
+        this.user.fullName = data.fullName;
+        this.user.linkedin = data.linkedin;
+        this.user.phoneNumber = data.phoneNumber;
+        this.user.profilePicture = data.profilePicture;
+
+        this.userService.updateUserProfile(this.userAllFunction.email, this.user)
+          .subscribe((userData) => {
+          // succ
+          localStorage.setItem(Constants.USER_KEY, JSON.stringify(userData));
+          this.getUserInfo(this.userAllFunction.email);
+        }, () => {
+          // errr
+        });
       });
   }
 

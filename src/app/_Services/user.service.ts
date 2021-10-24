@@ -27,16 +27,16 @@ export class UserService {
   }
 
   // tslint:disable-next-line: max-line-length
-  public register(fullName: string, email: string, password: string, role: string | undefined, webURL: string, logo: string, linkedin: string, aboutUs: string) {
+  public register(fullName: string, email: string, password: string, role: string | undefined, webURL: string, linkedin: string, yearFounded: number) {
     const body = {
       FullName: fullName,
       Email: email,
       Password: password,
       Role: role,
       WebURL: webURL,
-      Logo: logo,
       Linkedin: linkedin,
-      AboutUs: aboutUs
+      YearFounded: yearFounded,
+      Locations: ''
     };
 
     return this.httpClient.post<ResponseModel>(this.baseURL + 'registeruser', body);

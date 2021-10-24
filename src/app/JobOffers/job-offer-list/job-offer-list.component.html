@@ -1,5 +1,5 @@
 <div class="container pading">
-  <div class="row ">
+  <div class="row">
       <div class="col-3 text-center">
         <h3>Filter By</h3>
         <!-- Experience  -->
@@ -33,7 +33,6 @@
         <mat-label>Minimum Salary</mat-label><br>
         <mat-slider class="text-center" [(ngModel)]="salary" (pointerup)="salaryChange(salary1.value)" #salary1
           thumbLabel
-          [displayWith]="formatLabel"
           tickInterval="1000"
           step="100"
           min="0"
@@ -61,13 +60,6 @@
             <mat-option [value]="'Hybrid'">Hybrid</mat-option>
           </mat-select>
         </mat-form-field>
-        <!-- toggle all offers <-> my offers -->
-        <div *ngIf="isCompanyUser" style="margin-top: 3%;">
-          <span style="margin-right: 2%;">All job offers</span>
-          <mat-slide-toggle (change)="changed()" [(ngModel)]="checked"></mat-slide-toggle>
-          <span style="margin-left: 2%;">My job offers</span>
-        </div>
-        <!-- end toggle -->
       </div>
       <div class="col-1 vl"></div>
       <div class="col-8">
@@ -87,14 +79,13 @@
           <div>
               <a *ngIf="jobOffer.companyId == companyId" title="Edit" (click)="editJobOffer(jobOffer.id)"><i class="fas fa-edit"></i> </a>
               <a *ngIf="jobOffer.companyId == companyId" title="Delete" (click)="deleteJobOffer(jobOffer.id)" style="margin-left: 12px;"><i class="fas fa-trash-alt"></i> </a>
-              <button *ngIf="!isCompanyUser" class="btn btn-primary" (click)="apply(jobOffer.id)">Apply</button>
-              <app-upload (onUploadFinished)="uploadFinished($event)" *ngIf="!isCompanyUser"></app-upload>
           </div>
         </mat-card>
       </div>
     </div>
     <mat-paginator [length]="length"
                    [pageSize]="pageSize"
+                   [pageIndex]="pageIndex"
                    [pageSizeOptions]="pageSizeOptions"
                    (page)="pageEvent = getServerData($event)"
                    aria-label="Select page">

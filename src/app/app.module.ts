@@ -19,6 +19,7 @@ import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 import { AuthGuard } from './guards/auth-guard.service';
 import { RoleGuard } from './guards/role-guard.service';
+import { UserGuard } from './guards/user-guard.service';
 import { CompanyIdGuard } from './guards/companyId-guard.service';
 import { JobOfferExistsGuard } from './guards/JobOfferExists-guard.service';
 import { ProfileComponent } from './Profile/profile/profile.component';
@@ -28,11 +29,11 @@ import { DownloadComponent } from './download/download.component';
 import { JobApplicationComponent } from './job-application/job-application.component';
 import { JobApplicationForOfferComponent } from './job-application-for-offer/job-application-for-offer.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MatSliderModule } from '@angular/material/slider';
-import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { RouterModule } from '@angular/router';
 import { CommentsComponent } from './comment/comment.component';
 import { CommentService } from './_Services/CommentService';
+import { AddEditJobOfferDialogComponent } from './add-edit-job-offer-dialog/add-edit-job-offer-dialog.component';
+import { EditProfileDialogComponent } from './edit-profile-dialog/edit-profile-dialog.component';
 import { JobApplicationSharedTableComponent } from './job-application-shared-table/job-application-shared-table.component';
 import {MatSelectModule} from '@angular/material/select';
 import {MatCardModule} from '@angular/material/card';
@@ -41,11 +42,14 @@ import {MatButtonModule} from '@angular/material/button';
 import {MatInputModule} from '@angular/material/input';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {MatDialogModule} from '@angular/material/dialog';
-import { AddEditJobOfferDialogComponent } from './add-edit-job-offer-dialog/add-edit-job-offer-dialog.component';
+import { MatSliderModule } from '@angular/material/slider';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatCarouselModule } from '@ngmodule/material-carousel';
 import {MatTabsModule} from '@angular/material/tabs';
 import {MatPaginatorModule} from '@angular/material/paginator';
-
+import {MatTooltipModule} from '@angular/material/tooltip';
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import {MatNativeDateModule, MatRippleModule} from '@angular/material/core';
 
 @NgModule({
   declarations: [
@@ -66,7 +70,8 @@ import {MatPaginatorModule} from '@angular/material/paginator';
     JobApplicationForOfferComponent,
     CommentsComponent,
     JobApplicationSharedTableComponent,
-    AddEditJobOfferDialogComponent
+    AddEditJobOfferDialogComponent,
+    EditProfileDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -88,7 +93,11 @@ import {MatPaginatorModule} from '@angular/material/paginator';
     MatDialogModule,
     MatCarouselModule,
     MatTabsModule,
-    MatPaginatorModule
+    MatPaginatorModule,
+    MatTooltipModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatRippleModule
   ],
   providers: [
     CompanyService,
@@ -97,11 +106,12 @@ import {MatPaginatorModule} from '@angular/material/paginator';
     ConfirmationDialogService,
     AuthGuard,
     RoleGuard,
+    UserGuard,
     CompanyIdGuard,
     JobOfferExistsGuard,
     CommentService
   ],
   bootstrap: [AppComponent],
-  entryComponents: [AddEditJobOfferDialogComponent]
+  entryComponents: [AddEditJobOfferDialogComponent, EditProfileDialogComponent]
 })
 export class AppModule { }
