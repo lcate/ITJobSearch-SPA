@@ -5,13 +5,13 @@
     <div class="d-flex">
       <img class="rounded-circle shadow-1-strong me-3"
               style="margin-right: 2%;"
-              [src]="createImgPath(jobApplication.jobOffer.company.user.profilePicture)"
+              [src]="createImgPath(jobApplication.user.profilePicture)"
               alt="avatar"
               width="65"
               height="65"/>
       <div style="flex-grow: 1;" class="pt-2">
-        <mat-card-title>{{jobApplication.jobOffer.position}}</mat-card-title>
-        <mat-card-subtitle><b>Company:</b> {{jobApplication.jobOffer.company.name}}</mat-card-subtitle>
+        <mat-card-title>{{jobApplication.user.fullName}}</mat-card-title>
+        <mat-card-subtitle><b>E-mail:</b> {{jobApplication.user.email}}</mat-card-subtitle>
       </div>
       <div>
         <div *ngIf="!isCompanyUser">
@@ -25,43 +25,51 @@
           <span *ngIf="jobApplication.status == 2" class="badge badge-pill badge-danger" [ngbTooltip]="'Declined'">Declined</span>
         </div>
         <div *ngIf="isCompanyUser && jobApplication.status == 0">
-          <button (click)="hiredClick()" style="margin-bottom: 20%;" class="badge badge-pill badge-success">Hired</button><br>
-          <button (click)="declinedClick()" class="badge badge-pill badge-danger">Declined</button>
+          <button (click)="hiredClick()" style="margin-bottom: 20%;" class="badge badge-pill badge-success">Hire</button><br>
+          <button (click)="declinedClick()" class="badge badge-pill badge-danger">Decline</button>
         </div>
       </div>
     </div>
     <hr>
     <div class="row">
       <div class="col-6">
-        <mat-card-content><b>Experience:</b> {{jobApplication.jobOffer.experience}}</mat-card-content>
-        <mat-card-content><b>Work-type: </b>{{jobApplication.jobOffer.workType}}</mat-card-content>
+        <mat-card-content><b>From:</b> {{jobApplication.user.city}}</mat-card-content>
       </div>
       <div class="col-6">
-        <mat-card-content><b>Work-hours: </b>{{jobApplication.jobOffer.workHours}}</mat-card-content>
-        <mat-card-content><b>Salary: </b>{{jobApplication.jobOffer.salary}}</mat-card-content>
+        <mat-card-content><b>Date of birth: </b>{{jobApplication.user.dateOfBirth| date:'dd MMM yyyy'}}</mat-card-content>
       </div>
     </div>
-    <mat-card-content><b>About this job offer:</b> {{jobApplication.jobOffer.description}}</mat-card-content>
-    <app-download [fileUrl]="jobApplication.imgPath"></app-download>
+    <mat-card-content *ngIf="languages.length > 0"><b>Languages: </b>
+      <mat-chip-list
+          cdkDropListOrientation="horizontal">
+          <mat-chip
+            *ngFor="let language of languages">
+            {{language}}
+          </mat-chip>
+      </mat-chip-list>
+    </mat-card-content>
+    <mat-card-content><b>About this applicant:</b> {{jobApplication.user.aboutMe}}</mat-card-content>
+    <div class="w-100 text-right"><hr>
+      <app-download [fileUrl]="jobApplication.imgPath" [btnTitle]="'Download CV'"></app-download>
+    </div>
   </mat-card>
 
-  <section *ngFor="let comment of comments">
+  <section *ngFor="let comment of comments" class="mb-2">
     <div class="container text-dark">
       <div class="row d-flex justify-content-center">
         <div class="w-100">
           <div class="card">
             <div class="card-body p-4">
-              <div class="d-flex flex-start w-100"  [ngClass]="{'flex-row-reverse': userEmail == comment.user.email}">
+              <div class="d-flex w-100"  [ngClass]="{'flex-row-reverse': userEmail == comment.user.email}">
                 <img
                   class="rounded-circle shadow-1-strong me-3"
-                  style="margin-right: 2%;"
                   [src]="createImgPath(comment.user.profilePicture)"
                   alt="avatar"
                   width="65"
                   height="65"/>
                 <div class="w-100 d-flex justify-content-between" [ngClass]="{'flex-row-reverse': userEmail == comment.user.email}">
-                  <div>
-                    <h5>{{comment.user.fullName}} </h5>
+                  <div [ngClass]="{'current-user': userEmail == comment.user.email, 'not-current-user': userEmail != comment.user.email}">
+                    <h5 style="font-weight: bolder; font-size: 16px;">{{comment.user.fullName}} </h5>
                     <div class="form-outline" >
                       <p> {{comment.message}} </p>
                     </div>
@@ -80,7 +88,7 @@
   </section>
 
 
-  <section>
+  <section class="mb-4">
     <div class="container text-dark">
       <div class="row d-flex justify-content-center">
         <div class="w-100">
@@ -103,7 +111,7 @@
                   </div>
                   <div class="d-flex justify-content-between mt-3">
                     <app-upload (onUploadFinished)="uploadFinished($event)" [message]="message"></app-upload>
-                    <button type="button" class="btn btn-danger" (click)="addComment()"> Send <i class="fas fa-long-arrow-alt-right ms-1"></i></button>
+                    <button mat-stroked-button color="warn" (click)="addComment()"> Send <i class="fas fa-long-arrow-alt-right ms-1"></i></button>
                   </div>
                 </div>
               </div>

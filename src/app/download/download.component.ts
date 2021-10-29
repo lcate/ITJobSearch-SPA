@@ -10,6 +10,7 @@ import { FileService } from '../_Services/file.service';
 export class DownloadComponent implements OnInit {
 
   @Input() public fileUrl!: string;
+  @Input() public btnTitle = 'Download File';
 
   message!: string;
   progress!: number;

@@ -26,6 +26,8 @@ export class CommentsComponent implements OnInit {
   userEmail!: string;
   isCompanyUser!: boolean;
 
+  languages: string[] = [];
+
   public commentForm = this.formBuilder.group({
     commentMessage: ['', [Validators.required]]
   });
@@ -53,6 +55,9 @@ export class CommentsComponent implements OnInit {
     this.jobApplicationsService.getJobApplicationById(this.jobApplicationId)
       .subscribe((jobApplication: any) => {
         this.jobApplication = jobApplication;
+        if (this.jobApplication.user.languages !== null && this.jobApplication.user.languages.trim()){
+          this.languages = this.jobApplication.user.languages.split(',');
+        }
       },
       err => {
 

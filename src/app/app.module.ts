@@ -12,7 +12,6 @@ import { JobOfferListComponent } from './JobOffers/job-offer-list/job-offer-list
 import { HomeComponent } from './home/home.component';
 import { NavComponent } from './nav/nav.component';
 import { ConfirmationDialogComponent } from './confirmation-dialog/confirmation-dialog.component';
-import { DatepickerPopupComponent } from './datepicker/datepicker-popup';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { LoginComponent } from './login/login.component';
@@ -34,7 +33,7 @@ import { CommentsComponent } from './comment/comment.component';
 import { CommentService } from './_Services/CommentService';
 import { AddEditJobOfferDialogComponent } from './add-edit-job-offer-dialog/add-edit-job-offer-dialog.component';
 import { EditProfileDialogComponent } from './edit-profile-dialog/edit-profile-dialog.component';
-import { JobApplicationSharedTableComponent } from './job-application-shared-table/job-application-shared-table.component';
+import { EditorModule } from '@tinymce/tinymce-angular';
 import {MatSelectModule} from '@angular/material/select';
 import {MatCardModule} from '@angular/material/card';
 import {MatIconModule} from '@angular/material/icon';
@@ -50,6 +49,8 @@ import {MatPaginatorModule} from '@angular/material/paginator';
 import {MatTooltipModule} from '@angular/material/tooltip';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatNativeDateModule, MatRippleModule} from '@angular/material/core';
+import {MatChipsModule} from '@angular/material/chips';
+import {MatToolbarModule} from '@angular/material/toolbar';
 
 @NgModule({
   declarations: [
@@ -60,7 +61,6 @@ import {MatNativeDateModule, MatRippleModule} from '@angular/material/core';
     HomeComponent,
     NavComponent,
     ConfirmationDialogComponent,
-    DatepickerPopupComponent,
     LoginComponent,
     RegisterComponent,
     ProfileComponent,
@@ -69,7 +69,6 @@ import {MatNativeDateModule, MatRippleModule} from '@angular/material/core';
     JobApplicationComponent,
     JobApplicationForOfferComponent,
     CommentsComponent,
-    JobApplicationSharedTableComponent,
     AddEditJobOfferDialogComponent,
     EditProfileDialogComponent
   ],
@@ -80,10 +79,11 @@ import {MatNativeDateModule, MatRippleModule} from '@angular/material/core';
     FormsModule,
     HttpClientModule,
     ReactiveFormsModule,
-    MatSliderModule,
+    EditorModule,
     BrowserAnimationsModule,
-    MatSlideToggleModule,
     RouterModule,
+    MatSliderModule,
+    MatSlideToggleModule,
     MatSelectModule,
     MatCardModule,
     MatIconModule,
@@ -97,7 +97,9 @@ import {MatNativeDateModule, MatRippleModule} from '@angular/material/core';
     MatTooltipModule,
     MatDatepickerModule,
     MatNativeDateModule,
-    MatRippleModule
+    MatRippleModule,
+    MatChipsModule,
+    MatToolbarModule
   ],
   providers: [
     CompanyService,

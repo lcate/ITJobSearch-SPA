@@ -1,5 +1,6 @@
-<div class="container text-center" style="margin-top: 1%;">
-  <h3 class="text-center">Create new job offer</h3><hr>
+<div class="container text-center" style="margin-top: 1%;"><hr>
+  <h3 *ngIf="!isEdit" class="text-center">Create new job offer</h3>
+  <h3 *ngIf="isEdit" class="text-center">Edit job offer</h3><hr>
   <div class="d-flex align-items-center justify-content-between">
     <h4>Experience</h4>
     <mat-form-field appearance="fill" class="bigg ml-3">
@@ -72,13 +73,13 @@
   </div><br>
   <div class="form-group row">
     <div class="col-sm-6">
-      <button type="submit" class="btn btn-primary float-left" (click)="cancel()">Cancel</button>
+      <button mat-stroked-button color="warn" class="float-left" (click)="cancel()">Cancel</button>
     </div>
     <div *ngIf="isEdit" class="col-sm-6">
-      <button type="submit" class="btn btn-primary float-right" (click)="addOrEditJobOffer()">Save</button>
+      <button mat-stroked-button color="accent" class="float-right" (click)="addOrEditJobOffer()">Save</button>
     </div>
     <div *ngIf="!isEdit" class="col-sm-6">
-      <button type="submit" class="btn btn-primary float-right" (click)="addOrEditJobOffer()">Create offer</button>
+      <button mat-stroked-button color="accent" class="float-right" (click)="addOrEditJobOffer()">Create offer</button>
     </div>
   </div>
 </div>

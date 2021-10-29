@@ -1,7 +1,18 @@
-.title-home {
-  padding-top: 60px;
+.colr {
+  color: #009688 !important;
 }
 
-:host::ng-deep .carousel-indicators {
-  margin-left: 0% !important;
+h1 {
+  font-size: 60px !important;
+  margin-top: 4%;
+}
+
+h3 {
+  font-size: 30px !important;
+  margin-top: 4%;
+}
+
+h4 {
+  font-size: 40px !important;
+  margin-top: 4%;
 }

@@ -12,17 +12,18 @@ import { JobOfferListComponent } from './JobOffers/job-offer-list/job-offer-list
 import { LoginComponent } from './login/login.component';
 import { ProfileComponent } from './Profile/profile/profile.component';
 import { RegisterComponent } from './register/register.component';
+import { AuthGuard } from './guards/auth-guard.service';
 
 const routes: Routes = [
   { path: 'home', component: HomeComponent },
   { path: 'companies', component: CompanyListComponent, canActivate: [RoleGuard] },
-  { path: 'profile', component: ProfileComponent },
+  { path: 'profile/:id', component: ProfileComponent },
   { path: 'company', component: CompanyComponent },
   { path: 'company/:id', component: CompanyComponent },
   { path: 'joboffers', component: JobOfferListComponent },
-  { path: 'joboffer/:id', component: JobApplicationForOfferComponent },
+  { path: 'joboffer/:id', component: JobApplicationForOfferComponent, canActivate: [AuthGuard] },
   { path: 'jobapplications', component: JobApplicationComponent, canActivate: [UserGuard] },
-  { path: 'jobapplications/details/:id', component: CommentsComponent },
+  { path: 'jobapplications/details/:id', component: CommentsComponent, canActivate: [AuthGuard] },
   { path: 'register', component: RegisterComponent },
   { path: 'login', component: LoginComponent },
   { path: '**', redirectTo: 'home', pathMatch: 'full' }

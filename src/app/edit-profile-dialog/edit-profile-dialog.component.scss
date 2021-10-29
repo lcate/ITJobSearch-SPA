@@ -1,0 +1,13 @@
+.widthB {
+  width: 400px;
+}
+.example-chip-list {
+  width: 100%;
+}
+
+:host::ng-deep .leftSide {
+  flex-direction: row-reverse;
+  .info {
+    margin-right: 15px;
+  }
+}

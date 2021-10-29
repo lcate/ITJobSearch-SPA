@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { JobApplication } from '../_Models/JobApplication';
 import { JobOffer } from '../_Models/JobOffer';
 import { AllFunctions } from '../_Services/allFunctions';
@@ -9,7 +9,7 @@ import { JobOffersService } from '../_Services/JobOfferService';
 @Component({
   selector: 'app-job-application-for-offer',
   templateUrl: './job-application-for-offer.component.html',
-  styleUrls: ['./job-application-for-offer.component.css']
+  styleUrls: ['./job-application-for-offer.component.scss']
 })
 export class JobApplicationForOfferComponent implements OnInit {
 
@@ -25,7 +25,7 @@ export class JobApplicationForOfferComponent implements OnInit {
   hasUserApplied = false;
   public response!: {dbPath: ''};
 
-  constructor(private route: ActivatedRoute, private jobApplicationsService: JobApplicationService,
+  constructor(private router: Router, private route: ActivatedRoute, private jobApplicationsService: JobApplicationService,
               private jobOfferService: JobOffersService, private allFunction: AllFunctions) { }
 
   ngOnInit(): void {
@@ -70,19 +70,29 @@ export class JobApplicationForOfferComponent implements OnInit {
   public ifUserHasApplied() {
     this.hasUserApplied = this.jobApplications.some((x) => x.user.email === this.userEmail);
     this.jobApplication = this.jobApplications.find((x) => x.user.email === this.userEmail)!;
+    if(this.hasUserApplied){
+      this.router.navigate(['/jobapplications/details/' + this.jobApplication.id]);
+    }
   }
 
   public apply(jobOfferId: number) {
     this.jobApplicationsService.addJobApplication(this.userEmail, jobOfferId, this.response.dbPath)
       .subscribe( x => {
         if (x) {
+          this.getJobApplicationsByJobOfferId(jobOfferId);
+          this.hasUserApplied = true;
         }
       },
       error => {
+        this.hasUserApplied = false;
       });
   }
 
   public createImgPath = (serverPath: string) => {
-    return `https://localhost:5001/${serverPath}`;
+    if (serverPath !== null && serverPath !== '') {
+      return `https://localhost:5001/${serverPath}`;
+    } else {
+      return 'https://loverary.files.wordpress.com/2013/10/facebook-default-no-profile-pic.jpg?w=778';
+    }
   }
 }

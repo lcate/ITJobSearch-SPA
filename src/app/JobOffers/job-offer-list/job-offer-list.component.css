@@ -10,7 +10,16 @@ mat-slider {
   width: 80%;
 }
 
-.vl {
+.verticalLine {
   border-left: 2px solid gray;
 }
 
+mat-paginator {
+  background: transparent;
+  color: white;
+  font-size: 14px;
+}
+
+:host::ng-deep mat-paginator .mat-select-min-line, :host::ng-deep mat-paginator .mat-select-arrow {
+  color:white;
+}

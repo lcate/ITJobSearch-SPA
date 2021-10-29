@@ -1,7 +1,7 @@
 <div class="container pading">
   <div class="row">
       <div class="col-3 text-center">
-        <h3>Filter By</h3>
+        <h3><strong>Filter By</strong></h3>
         <!-- Experience  -->
         <h4>Experience</h4>
         <mat-form-field appearance="fill">
@@ -61,10 +61,13 @@
           </mat-select>
         </mat-form-field>
       </div>
-      <div class="col-1 vl"></div>
+      <div class="col-1 verticalLine"></div>
       <div class="col-8">
-        <h3 class="text-center">Job offers</h3>
+        <h3 class="text-center"><strong>Job offers</strong></h3>
         <button mat-stroked-button color="accent" (click)="addJobOffer()" *ngIf="isCompanyUser" style="float: right;">New offer</button><br><br>
+        <div *ngIf="length === 0" class="text-center" style="margin-top: 28%;">
+          <h3><strong>There are currently no job offers available.</strong></h3>
+        </div>
         <mat-card *ngFor="let jobOffer of filteredJobOffers" style="margin-bottom: 2%;" class="d-flex clickable">
           <img class="rounded-circle shadow-1-strong me-3" [routerLink]="['/joboffer/', jobOffer.id]"
               style="margin-right: 2%;"

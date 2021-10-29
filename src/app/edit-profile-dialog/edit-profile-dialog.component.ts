@@ -4,26 +4,38 @@ import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Company } from '../_Models/Company';
 import { User } from '../_Models/User';
+import { COMMA, ENTER } from '@angular/cdk/keycodes';
+import {MatChipInputEvent} from '@angular/material/chips';
 
 @Component({
   selector: 'app-edit-profile-dialog',
   templateUrl: './edit-profile-dialog.component.html',
-  styleUrls: ['./edit-profile-dialog.component.css']
+  styleUrls: ['./edit-profile-dialog.component.scss']
 })
 export class EditProfileDialogComponent implements OnInit {
 
   isCompany = false;
   dbPath!: any;
+  infoType = 0;
 
   public user: User = new User();
   public company: Company = new Company();
 
   public editProfileForm!: FormGroup;
 
+  title!: string;
+
   startDate = new Date(1960, 0, 1);
+
+  selectable = true;
+  removable = true;
+  addOnBlur = true;
+  readonly separatorKeysCodes = [ENTER, COMMA] as const;
+  languages: string[] =[];
 
   constructor(private dialogRef: MatDialogRef<EditProfileDialogComponent>, private formBuilder: FormBuilder,
               @Inject(MAT_DIALOG_DATA) data: any) {
+                this.infoType = data.infoType;
                 if (data.user !== null) {
                   this.user = data.user;
                   this.dbPath = this.user.profilePicture;
@@ -33,6 +45,16 @@ export class EditProfileDialogComponent implements OnInit {
                   this.dbPath = this.company.user.profilePicture;
                 }
                 this.isCompany = data.isCompany;
+                if (this.infoType === 1){
+                  this.title = 'Education';
+                } else if (this.infoType === 2){
+                  this.title = 'Experience';
+                } else if (this.infoType === 3){
+                  this.title = 'Projects';
+                }
+                if(this.user.languages !== null && this.user.languages.trim()){
+                  this.languages = this.user.languages.split(',');
+                }
               }
 
   ngOnInit(): void {
@@ -45,7 +67,8 @@ export class EditProfileDialogComponent implements OnInit {
         fullName: [this.user.fullName, [Validators.required]],
         linkedin: [this.user.linkedin, [Validators.required]],
         phoneNumber: [this.user.phoneNumber, [Validators.required]],
-        aboutMe: [this.user.aboutMe]
+        aboutMe: [this.user.aboutMe],
+        otherInfo: [this.infoType === 1 ? this.user.education : this.infoType === 2 ? this.user.experience : this.infoType === 3 ? this.user.projects : '']
       });
     } else {
       this.editProfileForm = this.formBuilder.group({
@@ -88,6 +111,20 @@ export class EditProfileDialogComponent implements OnInit {
       this.dialogRef.close(this.user);
   }
 
+  editUserOtherInfo() {
+    if (this.infoType === 1) {
+      this.user.education = this.editProfileForm.controls.otherInfo.value;
+    } else if(this.infoType === 2) {
+      this.user.languages = this.languages.toString();
+      this.user.experience = this.editProfileForm.controls.otherInfo.value;
+    } else if (this.infoType === 3) {
+      this.user.projects = this.editProfileForm.controls.otherInfo.value;
+    }
+
+    this.dialogRef.close(this.user);
+}
+
+
   editCompanyProfile() {
     this.company.user.email = this.editProfileForm.controls.email.value;
     this.company.user.aboutMe = this.editProfileForm.controls.aboutMe.value;
@@ -102,11 +139,30 @@ export class EditProfileDialogComponent implements OnInit {
     this.company.locations = this.editProfileForm.controls.locations.value;
     this.company.employeesTo = this.editProfileForm.controls.employeesTo.value;
     this.company.employeesFrom = this.editProfileForm.controls.employeesFrom.value;
+    this.company.webURL = this.editProfileForm.controls.webURL.value;
 
     this.dialogRef.close(this.company);
 }
 
   cancel() {
       this.dialogRef.close();
+  }
+
+  add(event: MatChipInputEvent, inpt: any): void {
+    const value = (event.value || '').trim();
+    // Add our language
+    if (value) {
+      this.languages.push(value);
+    }
+    // Clear the input value
+    inpt.value = '';
+  }
+
+  remove(language: any): void {
+    const index = this.languages.indexOf(language);
+
+    if (index >= 0) {
+      this.languages.splice(index, 1);
+    }
   }
 }

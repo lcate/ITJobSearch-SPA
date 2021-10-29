@@ -11,5 +11,9 @@ export class User {
   public address = '';
   public role = '';
   public phoneNumber = '';
+  public experience = '';
+  public education = '';
+  public projects = '';
+  public languages = '';
 
 }

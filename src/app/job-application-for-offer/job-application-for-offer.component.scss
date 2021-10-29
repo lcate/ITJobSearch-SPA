@@ -1,0 +1,10 @@
+.clickable {
+  cursor: pointer;
+}
+
+:host::ng-deep .leftSide {
+  flex-direction: row-reverse;
+  .info {
+    margin-right: 15px;
+  }
+}

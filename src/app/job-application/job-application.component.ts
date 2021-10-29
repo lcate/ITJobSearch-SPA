@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { JobApplication } from '../_Models/JobApplication';
 import { JobApplicationService } from '../_Services/JobApplicationService';
 import { AllFunctions } from 'src/app/_Services/allFunctions';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-job-application',
@@ -15,7 +16,8 @@ export class JobApplicationComponent implements OnInit {
 
   jobApplications!: any;
 
-  constructor(private jobAppService: JobApplicationService,
+  constructor(private router: Router,
+              private jobAppService: JobApplicationService,
               private allFunction: AllFunctions) { }
 
   ngOnInit(): void {
@@ -37,7 +39,14 @@ export class JobApplicationComponent implements OnInit {
   }
 
   public createImgPath = (serverPath: string) => {
-    return `https://localhost:5001/${serverPath}`;
+    if (serverPath !== null && serverPath !== '') {
+      return `https://localhost:5001/${serverPath}`;
+    } else {
+      return 'https://loverary.files.wordpress.com/2013/10/facebook-default-no-profile-pic.jpg?w=778';
+    }
   }
 
+  findJob() {
+    this.router.navigate(['/joboffers']);
+  }
 }

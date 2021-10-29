@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-primary">
+<nav class="navbar navbar-expand-md navbar-dark fixed-top " style="background-color: white;">
   <a class="navbar-brand" [routerLink]="['/home']">ITJobSearch</a>
 
   <ul class="navbar-nav mr-auto">
@@ -6,7 +6,7 @@
     <a class="nav-link" [routerLink]="['/jobapplications']" *ngIf="isUser && isUserLoggedIn">My Applications</a>
   </ul>
   <ul class="nav navbar-nav navbar-right">
-    <a class="nav-link" [routerLink]="['/profile']" *ngIf="isUserLoggedIn">Welcome {{ userName }}</a>
+    <a class="nav-link" [routerLink]="['/profile/' + user.userId]" *ngIf="isUserLoggedIn">Welcome {{ userName }}</a>
     <a class="nav-link" [routerLink]="['/register']" *ngIf="!isUserLoggedIn">Register</a>
     <a class="nav-link" [routerLink]="['/login']" *ngIf="!isUserLoggedIn">Login</a>
     <a class="nav-link navbar-right" [routerLink]="['/login']" (click)="onLogout()" *ngIf="isUserLoggedIn">Log out</a>

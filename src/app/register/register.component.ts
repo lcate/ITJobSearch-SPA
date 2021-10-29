@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { Validators, FormGroup, FormControl } from '@angular/forms';
+import { Validators, FormGroup, FormControl, FormGroupDirective, NgForm } from '@angular/forms';
+import { ErrorStateMatcher } from '@angular/material/core';
 import { Router } from '@angular/router';
 import { Constants } from '../Helpers/constants';
+import { AllFunctions } from '../_Services/allFunctions';
 import { UserService } from '../_Services/user.service';
 
 @Component({
@@ -13,8 +15,12 @@ export class RegisterComponent implements OnInit {
 
   public registerForm!: FormGroup;
 
-  constructor(private userService: UserService, private router: Router) {
-    this.registerForm = new FormGroup({
+  constructor(private userService: UserService, private router: Router, private allFunction: AllFunctions) {
+
+  }
+
+  ngOnInit(): void {
+      this.registerForm = new FormGroup({
       fullName: new FormControl('', Validators.required),
       email: new FormControl('',  [Validators.required, Validators.email]),
       password: new FormControl('', Validators.required),
@@ -22,9 +28,6 @@ export class RegisterComponent implements OnInit {
       linkedin: new FormControl(''),
       yearFounded: new FormControl(''),
     });
-  }
-
-  ngOnInit(): void {
   }
 
   public onSubmit(role: string) {
@@ -38,7 +41,8 @@ export class RegisterComponent implements OnInit {
     this.userService.register(fullName, email, password, role, webURL, linkedin, yearFounded).subscribe((data: any) => {
       if (data.responseCode === 1) {
         localStorage.setItem(Constants.USER_KEY, JSON.stringify(data.dataSet));
-        this.router.navigate(['/profile']);
+        const user = this.allFunction.user;
+        this.router.navigate(['/profile/'+ user.userId]);
       }
     },
     (error) => {

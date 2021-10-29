@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { Constants } from '../Helpers/constants';
+import { AllFunctions } from '../_Services/allFunctions';
 
 @Component({
   selector: 'app-home',
@@ -6,15 +9,27 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit {
-  slides = [
-    {image: 'https://cdn.mos.cms.futurecdn.net/vZLMcEg5JqfGeXydVkkxhk-970-80.jpg.webp'},
-    {image: 'https://thumbs.dreamstime.com/z/web-design-concept-tiny-people-building-webpage-website-interface-design-software-development-process-programming-coding-seo-227595659.jpg'},
-    {image: 'https://miro.medium.com/max/2000/0*mfUNFSHyrXnH7ZKf'}
-  ];
 
-  constructor() {}
+  constructor(private router: Router, private allFunction: AllFunctions) {}
 
   ngOnInit(): void {
   }
 
+  findAJob() {
+    this.router.navigate(['/joboffers']);
+  }
+
+  registerForOfferingJob() {
+    const isCompany= this.allFunction.isCompany;
+    const isUserLoggedIn= this.allFunction.isUserLoggedIn;
+    if(isCompany && isUserLoggedIn) {
+      this.router.navigate(['/joboffers']);
+    } else if (isUserLoggedIn) {
+      localStorage.removeItem(Constants.USER_KEY);
+      localStorage.clear();
+      this.router.navigate(['/register']);
+    } else {
+      this.router.navigate(['/register']);
+    }
+  }
 }

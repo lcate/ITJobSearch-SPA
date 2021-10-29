@@ -7,3 +7,12 @@
   font-size: 12px;
   width: 65px;
 }
+
+.current-user {
+  text-align: end;
+  margin-right: 2%;
+}
+
+.not-current-user {
+  margin-left: 2%;
+}

@@ -1,7 +1,7 @@
 <div class="container text-center" style="margin-top: 1%;">
-  <h3 class="text-center">Edit profile</h3><hr>
+  <h3 class="text-center" *ngIf="infoType === 0 || infoType === null">Edit profile</h3><hr>
     <!-- user form -->
-    <form *ngIf="!isCompany" [formGroup]="editProfileForm" class="form-group">
+    <form *ngIf="!isCompany && infoType === 0" [formGroup]="editProfileForm" class="form-group">
       <div class="d-flex align-items-center justify-content-between">
         <mat-label class="float-left">Profile Picure</mat-label>
         <app-upload class="float-right" (onUploadFinished)="uploadFinished($event)"></app-upload>
@@ -51,8 +51,36 @@
       </div>
     </form>
 
+    <!-- other user info -->
+    <form *ngIf="infoType !== 0 && !isCompany" [formGroup]="editProfileForm" class="form-group">
+      <mat-card-title>{{title}}</mat-card-title>
+      <hr>
+      <editor apiKey="mu7qk119ujsm3obqd060ub10534sdz24stqo8kdj63yd86ph" formControlName="otherInfo" [init]="{force_br_newlines: false, force_p_newlines: true,forced_root_block: '',plugins: 'link lists',menubar: false,toolbar: 'undo redo |  formatselect | bold italic link | bullist numlist | removeformat'}">
+      </editor><br>
+      <mat-card-title *ngIf="infoType === 2">Languages</mat-card-title>
+      <mat-form-field *ngIf="infoType === 2" class="example-chip-list" appearance="fill">
+        <mat-chip-list #chipList aria-label="Language selection">
+          <mat-chip *ngFor="let language of languages" [selectable]="selectable"
+                   [removable]="removable" (removed)="remove(language)">
+              {{language}}
+            <div matChipRemove *ngIf="removable" style="width: auto; height: auto;">
+              <mat-icon>cancel</mat-icon>
+            </div>
+          </mat-chip>
+          <input placeholder="New language..."
+                 [matChipInputFor]="chipList"
+                 #languageInput
+                 [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                 [matChipInputAddOnBlur]="addOnBlur"
+                 (matChipInputTokenEnd)="add($event, languageInput)">
+        </mat-chip-list>
+      </mat-form-field>
+      <button mat-stroked-button color="accent" type="submit" class="float-left" (click)="cancel()">Cancel</button>
+      <button mat-stroked-button color="accent" type="submit" class="float-right" (click)="editUserOtherInfo()" >Save</button>
+    </form>
+
     <!-- company form -->
-    <form *ngIf="isCompany" [formGroup]="editProfileForm" class="form-group">
+    <form *ngIf="isCompany && infoType === null" [formGroup]="editProfileForm" class="form-group">
       <div class="d-flex align-items-center justify-content-between">
         <mat-label class="float-left">Profile Picure</mat-label>
         <app-upload class="float-right" (onUploadFinished)="uploadFinished($event)"></app-upload>

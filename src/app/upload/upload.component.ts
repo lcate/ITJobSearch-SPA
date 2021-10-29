@@ -10,6 +10,7 @@ import { FileService } from '../_Services/file.service';
 export class UploadComponent implements OnInit {
 
   @Input() public message!: string;
+  @Input() public btnTitle = 'Upload';
 
   @Output() public onUploadFinished = new EventEmitter();
 

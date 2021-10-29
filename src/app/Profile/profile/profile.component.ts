@@ -20,6 +20,8 @@ export class ProfileComponent implements OnInit {
   response!: {dbPath: ''};
   userAllFunction: any;
 
+  languages: string[] = [];
+
   constructor(private allFunction: AllFunctions, private companyService: CompanyService, private userService: UserService,
               private dialog: MatDialog) {}
 
@@ -36,6 +38,9 @@ export class ProfileComponent implements OnInit {
   getUserInfo(email: string) {
     this.userService.getUserByEmail(email).subscribe(user => {
       this.user = user;
+      if (this.user.languages !== null && this.user.languages.trim()){
+        this.languages = this.user.languages.split(',');
+      }
     });
   }
 
@@ -55,7 +60,8 @@ export class ProfileComponent implements OnInit {
     dialogConfig.data = {
       isCompany: true,
       user: null,
-      company: this.company
+      company: this.company,
+      infoType: null
     };
 
     const dialogRef = this.dialog.open(EditProfileDialogComponent, dialogConfig);
@@ -90,7 +96,7 @@ export class ProfileComponent implements OnInit {
       });
   }
 
-  public editUserProfile() {
+  public editUserProfile(infoType: number) {
     const dialogConfig = new MatDialogConfig();
 
     dialogConfig.disableClose = true;
@@ -99,7 +105,8 @@ export class ProfileComponent implements OnInit {
     dialogConfig.data = {
       isCompany: false,
       company: null,
-      user: this.user
+      user: this.user,
+      infoType: infoType
     };
 
     const dialogRef = this.dialog.open(EditProfileDialogComponent, dialogConfig);
@@ -115,6 +122,10 @@ export class ProfileComponent implements OnInit {
         this.user.linkedin = data.linkedin;
         this.user.phoneNumber = data.phoneNumber;
         this.user.profilePicture = data.profilePicture;
+        this.user.experience = data.experience;
+        this.user.projects = data.projects;
+        this.user.languages = data.languages;
+        this.user.education = data.education;
 
         this.userService.updateUserProfile(this.userAllFunction.email, this.user)
           .subscribe((userData) => {
